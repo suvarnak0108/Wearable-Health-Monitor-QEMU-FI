@@ -1,0 +1,131 @@
+
+Discarded input sections
+
+ .comment       0x00000000       0x27 /tmp/ccE5F0HW.o
+ .comment       0x00000000       0x27 /tmp/ccvFtie0.o
+ .comment       0x00000000       0x27 /tmp/ccS6JL1h.o
+ .comment       0x00000000       0x27 /tmp/ccojl5SO.o
+ .comment       0x00000000       0x27 /tmp/ccD86rMt.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+FLASH            0x00000000         0x00400000         xr
+RAM              0x20000000         0x00400000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+                0x20400000                        _estack = (ORIGIN (RAM) + LENGTH (RAM))
+
+.isr_vector     0x00000000       0xc0
+ *(.isr_vector)
+ .isr_vector    0x00000000       0xc0 /tmp/ccBkeJgZ.o
+                0x00000000                __Vectors
+
+.text           0x000000c0     0xda64
+ *(.text*)
+ .text          0x000000c0        0x0 /tmp/ccBkeJgZ.o
+ .text.Reset_Handler
+                0x000000c0       0x58 /tmp/ccBkeJgZ.o
+                0x000000c0                Reset_Handler
+ .text.Default_Handler
+                0x00000118        0x4 /tmp/ccBkeJgZ.o
+                0x00000118                Default_Handler
+ .text          0x0000011c      0x338 /tmp/ccE5F0HW.o
+                0x000001fc                main
+ .text          0x00000454       0x8c /tmp/ccvFtie0.o
+                0x00000454                ECG_Filter_Init
+                0x00000470                ECG_Filter_Process
+ .text          0x000004e0       0x90 /tmp/ccS6JL1h.o
+                0x000004e0                RPeak_Init
+                0x000004f6                RPeak_Process
+ .text          0x00000570       0xe8 /tmp/ccojl5SO.o
+                0x00000570                HR_Estimate
+ .text          0x00000658       0x80 /tmp/ccD86rMt.o
+                0x00000658                Fault_Detect
+ *(.rodata*)
+ .rodata.str1.4
+                0x000006d8      0x11d /tmp/ccE5F0HW.o
+ *fill*         0x000007f5        0x3 
+ .rodata        0x000007f8     0xd2f0 /tmp/ccE5F0HW.o
+ .rodata        0x0000dae8       0x3c /tmp/ccvFtie0.o
+                0x0000db24                        . = ALIGN (0x4)
+                0x0000db24                        _etext = .
+                0x0000db24                        _sidata = LOADADDR (.data)
+
+.glue_7         0x0000db24        0x0
+ .glue_7        0x0000db24        0x0 linker stubs
+
+.glue_7t        0x0000db24        0x0
+ .glue_7t       0x0000db24        0x0 linker stubs
+
+.vfp11_veneer   0x0000db24        0x0
+ .vfp11_veneer  0x0000db24        0x0 linker stubs
+
+.v4_bx          0x0000db24        0x0
+ .v4_bx         0x0000db24        0x0 linker stubs
+
+.iplt           0x0000db24        0x0
+ .iplt          0x0000db24        0x0 /tmp/ccBkeJgZ.o
+
+.rel.dyn        0x0000db24        0x0
+ .rel.iplt      0x0000db24        0x0 /tmp/ccBkeJgZ.o
+
+.data           0x20000000        0x0 load address 0x0000db24
+                0x20000000                        . = ALIGN (0x4)
+                0x20000000                        _sdata = .
+ *(.data*)
+ .data          0x20000000        0x0 /tmp/ccBkeJgZ.o
+ .data          0x20000000        0x0 /tmp/ccE5F0HW.o
+ .data          0x20000000        0x0 /tmp/ccvFtie0.o
+ .data          0x20000000        0x0 /tmp/ccS6JL1h.o
+ .data          0x20000000        0x0 /tmp/ccojl5SO.o
+ .data          0x20000000        0x0 /tmp/ccD86rMt.o
+                0x20000000                        . = ALIGN (0x4)
+                0x20000000                        _edata = .
+
+.igot.plt       0x20000000        0x0 load address 0x0000db24
+ .igot.plt      0x20000000        0x0 /tmp/ccBkeJgZ.o
+
+.bss            0x20000000        0x0 load address 0x0000db24
+                0x20000000                        . = ALIGN (0x4)
+                0x20000000                        _sbss = .
+ *(.bss*)
+ .bss           0x20000000        0x0 /tmp/ccBkeJgZ.o
+ .bss           0x20000000        0x0 /tmp/ccE5F0HW.o
+ .bss           0x20000000        0x0 /tmp/ccvFtie0.o
+ .bss           0x20000000        0x0 /tmp/ccS6JL1h.o
+ .bss           0x20000000        0x0 /tmp/ccojl5SO.o
+ .bss           0x20000000        0x0 /tmp/ccD86rMt.o
+ *(COMMON)
+                0x20000000                        . = ALIGN (0x4)
+                0x20000000                        _ebss = .
+
+/DISCARD/
+ *(.comment*)
+ *(.note*)
+LOAD /tmp/ccBkeJgZ.o
+LOAD /tmp/ccE5F0HW.o
+LOAD /tmp/ccvFtie0.o
+LOAD /tmp/ccS6JL1h.o
+LOAD /tmp/ccojl5SO.o
+LOAD /tmp/ccD86rMt.o
+LOAD /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/libgcc.a
+OUTPUT(firmware/independent_trial.elf elf32-littlearm)
+LOAD linker stubs
+
+.ARM.attributes
+                0x00000000       0x35
+ .ARM.attributes
+                0x00000000       0x25 /tmp/ccBkeJgZ.o
+ .ARM.attributes
+                0x00000025       0x34 /tmp/ccE5F0HW.o
+ .ARM.attributes
+                0x00000059       0x34 /tmp/ccvFtie0.o
+ .ARM.attributes
+                0x0000008d       0x34 /tmp/ccS6JL1h.o
+ .ARM.attributes
+                0x000000c1       0x34 /tmp/ccojl5SO.o
+ .ARM.attributes
+                0x000000f5       0x34 /tmp/ccD86rMt.o

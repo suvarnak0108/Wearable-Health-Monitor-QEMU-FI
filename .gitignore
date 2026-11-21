@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+*.elf
+*.bin
+*.o
+*.su
+*.aux
+*.log
+*.out

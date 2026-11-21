@@ -1,0 +1,2 @@
+TP,FP,FN,TN,Interruption_events,Precision,Recall,F1_score
+150,0,0,2850,3,100.0,100.0,100.0

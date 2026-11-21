@@ -1,0 +1,7 @@
+,r_peaks,r_peaks,failed_windows,failed_windows,hr_mae,hr_mae,baseline_f1,baseline_f1,proposed_precision,proposed_precision,proposed_recall,proposed_recall,proposed_f1,proposed_f1,proposed_fpr,proposed_fpr
+,mean,std,mean,std,mean,std,mean,std,mean,std,mean,std,mean,std,mean,std
+noise_std,,,,,,,,,,,,,,,,
+0.08,80.0,0.0,0.0,0.0,0.19936154394056632,1.297463567880351e-14,0.0,0.0,1.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0
+0.15,80.0,0.0,0.0,0.0,0.19936154394056918,1.5781861949507736e-14,0.0,0.0,1.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0
+0.25,80.1,0.3162277660168389,0.0,0.0,0.2163558949072725,0.03176574085402673,0.0,0.0,1.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0
+0.35,79.7,0.8232726023485638,0.0,0.0,0.21764305563617276,0.026870191863502216,0.0,0.0,1.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0

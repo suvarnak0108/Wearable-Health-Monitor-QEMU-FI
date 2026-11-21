@@ -1,0 +1,16 @@
+Fault_Type,Density_pct,Precision,Recall,F1,FPR
+missing_samples,1.0,100.0,100.0,100.0,0.0
+out_of_range,1.0,100.0,100.0,100.0,0.0
+in_range_hr_drift,1.0,100.0,100.0,100.0,0.0
+missing_samples,2.5,100.0,100.0,100.0,0.0
+out_of_range,2.5,100.0,100.0,100.0,0.0
+in_range_hr_drift,2.5,100.0,100.0,100.0,0.0
+missing_samples,5.0,100.0,100.0,100.0,0.0
+out_of_range,5.0,100.0,100.0,100.0,0.0
+in_range_hr_drift,5.0,100.0,100.0,100.0,0.0
+missing_samples,10.0,100.0,100.0,100.0,0.0
+out_of_range,10.0,100.0,100.0,100.0,0.0
+in_range_hr_drift,10.0,100.0,100.0,100.0,0.0
+missing_samples,20.0,100.0,100.0,100.0,0.0
+out_of_range,20.0,100.0,100.0,100.0,0.0
+in_range_hr_drift,20.0,100.0,100.0,100.0,0.0
