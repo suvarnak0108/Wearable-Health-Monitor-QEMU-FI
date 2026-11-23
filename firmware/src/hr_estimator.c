@@ -66,12 +66,25 @@ float HR_Estimate_Mitigated(const uint32_t *peaks, uint32_t count, float fs,
     }
 
     float ratio = (raw_rr > 0U) ? ((float)valid / (float)raw_rr) : 0.0f;
-    *out_sqi = 100.0f * (1.0f - rho_f) * (0.5f + 0.5f * ratio);
+    float reg_factor = 1.0f;
+    if (valid >= 2U) {
+        sort_floats(rr, valid);
+        float med = (valid % 2U == 1U) ? rr[valid / 2U] : 0.5f * (rr[valid / 2U - 1U] + rr[valid / 2U]);
+        float span = rr[valid - 1U] - rr[0U];
+        float rel_span = (med > 0.0f) ? (span / med) : 1.0f;
+        /* Penalize SQI proportionally to beat-to-beat RR spread (ectopy, T-wave double triggers, motion spikes) */
+        reg_factor = 1.0f - 0.65f * rel_span;
+        if (reg_factor < 0.15f) reg_factor = 0.15f;
+    } else {
+        reg_factor = 0.0f;
+    }
 
-    if (valid < 2U || rho_f > 0.35f) {
+    *out_sqi = 100.0f * (1.0f - rho_f) * ratio * reg_factor;
+
+    /* Engage hold-last-HR when RR intervals are insufficient, fault density > 25%, or SQI < 50% */
+    if (valid < 2U || rho_f > 0.25f || *out_sqi < 50.0f) {
         return last_valid_hr;
     }
-    sort_floats(rr, valid);
     float med = (valid % 2U == 1U) ? rr[valid / 2U] : 0.5f * (rr[valid / 2U - 1U] + rr[valid / 2U]);
     return (med > 0.0f) ? (60.0f * fs / med) : last_valid_hr;
 }
