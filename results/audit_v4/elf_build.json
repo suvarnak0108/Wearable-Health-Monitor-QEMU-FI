@@ -1,0 +1,18 @@
+{
+  "elf": "firmware/firmware_m4.elf",
+  "sha256": "7ed24171dbf016ec1ce0b52cf1c74adf36b869cfd26265f6d78c3edeb7a69e04",
+  "su_bytes": {
+    "RPeak_Init": 0,
+    "RPeak_Process": 0,
+    "print_kv": 96,
+    "main": 2800,
+    "Fault_Init": 0,
+    "Fault_Detect_Full": 0,
+    "ECG_Filter_Init": 0,
+    "ECG_Filter_Process": 12,
+    "sort_floats": 8,
+    "HR_Estimate_Raw": 264,
+    "HR_Estimate_RR_Filtered": 272,
+    "HR_Estimate_Mitigated": 288
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "n_trials": 20,
+  "f5_random_window": {
+    "stale_code_4_recall_mean": 10.393939393939393,
+    "stale_code_4_recall_sd": 1.4486189737238764,
+    "overall_fault_recall_mean": 10.939393939393938,
+    "overall_fault_recall_sd": 2.6923153932613175
+  },
+  "burst_plus_stale_random_window": {
+    "stale_code_4_recall_mean": 8.93939393939394,
+    "stale_code_4_recall_sd": 4.105208631162305,
+    "overall_fault_recall_mean": 30.70504821327283,
+    "overall_fault_recall_sd": 3.3923045182355476,
+    "overall_f1_mean": 20.412497972172442,
+    "overall_f1_sd": 2.731289786641161
+  }
+}

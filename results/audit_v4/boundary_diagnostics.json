@@ -1,0 +1,32 @@
+{
+  "+10.0": {
+    "flag_pct_mean": 9.0,
+    "flag_pct_sd": 7.880689256524123,
+    "diff_mean_bpm": 10.08,
+    "diff_median_bpm": 10.0
+  },
+  "+11.0": {
+    "flag_pct_mean": 21.666666666666664,
+    "flag_pct_sd": 8.617946730396586,
+    "diff_mean_bpm": 11.08,
+    "diff_median_bpm": 11.0
+  },
+  "+12.0": {
+    "flag_pct_mean": 40.333333333333336,
+    "flag_pct_sd": 7.326950970650465,
+    "diff_mean_bpm": 12.08,
+    "diff_median_bpm": 12.0
+  },
+  "+13.0": {
+    "flag_pct_mean": 61.333333333333336,
+    "flag_pct_sd": 9.328319455274306,
+    "diff_mean_bpm": 13.080000000000002,
+    "diff_median_bpm": 13.0
+  },
+  "+14.0": {
+    "flag_pct_mean": 82.99999999999999,
+    "flag_pct_sd": 10.479721437304944,
+    "diff_mean_bpm": 14.080000000000002,
+    "diff_median_bpm": 14.0
+  }
+}
