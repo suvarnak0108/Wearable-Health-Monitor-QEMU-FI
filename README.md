@@ -10,11 +10,11 @@ Host-target evaluation pipeline for bare-metal Embedded C wearable cardiac monit
 - `results/` — Experimental logs, tables, and figures
 
 ## Pinned Tool Versions
-- OS / Host: Windows WSL Ubuntu `<exact version, e.g., 24.04 / 26.04>`
-- Python: `<e.g., 3.12.x>` (`numpy==...`, `scipy==...`, `pandas==...`)
-- Toolchain: `arm-none-eabi-gcc <exact version>` (`-O2 -ffreestanding -nostdlib -ffp-contract=off -fstack-usage -mfpu=fpv4-sp-d16 -mfloat-abi=hard`)
-- Emulator: `qemu-system-arm <exact version, e.g., 8.2.x / 9.x>` (`mps2-an386`)
-- Native compiler: `gcc <exact version>`
+- OS / Host: Windows WSL Ubuntu 26.04
+- Python: 3.12.3
+- Toolchain: arm-none-eabi-gcc 13.2.1
+- Emulator: qemu-system-arm 8.2.2
+- Native compiler: gcc 13.3.0
 
 ## Reproducing Results
 1. Generate dataset headers and run the QEMU suite:
