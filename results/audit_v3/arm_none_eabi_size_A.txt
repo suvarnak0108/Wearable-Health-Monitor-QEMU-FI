@@ -1,0 +1,16 @@
+/root/Wearable_Health_Monitor/firmware/audit_verified_m4.elf  :
+section             size        addr
+.isr_vector            8           0
+.text             105148           8
+.data                  0   536870912
+.bss                   0   536870912
+.ARM.attributes       50           0
+.debug_line           95           0
+.debug_line_str       96           0
+.debug_info           36           0
+.debug_abbrev         20           0
+.debug_aranges        32           0
+.debug_str           108           0
+Total             105593
+
+

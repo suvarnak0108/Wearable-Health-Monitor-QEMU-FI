@@ -1,0 +1,21 @@
+--- firmware/src/ecg_filter.su ---
+/root/Wearable_Health_Monitor/firmware/src/ecg_filter.c:10:6:ECG_Filter_Init	0	static
+/root/Wearable_Health_Monitor/firmware/src/ecg_filter.c:17:7:ECG_Filter_Process	12	static
+
+--- firmware/src/fault_detector.su ---
+/root/Wearable_Health_Monitor/firmware/src/fault_detector.c:5:6:Fault_Init	0	static
+/root/Wearable_Health_Monitor/firmware/src/fault_detector.c:14:11:Fault_Detect_Full	0	static
+
+--- firmware/src/hr_estimator.su ---
+/root/Wearable_Health_Monitor/firmware/src/hr_estimator.c:3:13:sort_floats	8	static
+/root/Wearable_Health_Monitor/firmware/src/hr_estimator.c:15:7:HR_Estimate_Raw	264	static
+/root/Wearable_Health_Monitor/firmware/src/hr_estimator.c:27:7:HR_Estimate_RR_Filtered	272	static
+/root/Wearable_Health_Monitor/firmware/src/hr_estimator.c:46:7:HR_Estimate_Mitigated	288	static
+
+--- firmware/src/main.su ---
+/root/Wearable_Health_Monitor/firmware/src/main.c:26:13:print_kv	96	static
+/root/Wearable_Health_Monitor/firmware/src/main.c:64:5:main	2800	static
+
+--- firmware/src/r_peak.su ---
+/root/Wearable_Health_Monitor/firmware/src/r_peak.c:7:6:RPeak_Init	0	static
+/root/Wearable_Health_Monitor/firmware/src/r_peak.c:16:9:RPeak_Process	0	static

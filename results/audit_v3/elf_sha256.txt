@@ -1,0 +1,1 @@
+7ed24171dbf016ec1ce0b52cf1c74adf36b869cfd26265f6d78c3edeb7a69e04  firmware/audit_verified_m4.elf

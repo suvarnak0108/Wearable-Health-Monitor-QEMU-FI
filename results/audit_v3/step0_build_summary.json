@@ -1,0 +1,59 @@
+{
+  "elf_path": "firmware/audit_verified_m4.elf",
+  "sha256": "7ed24171dbf016ec1ce0b52cf1c74adf36b869cfd26265f6d78c3edeb7a69e04",
+  "cflags": [
+    "-mcpu=cortex-m4",
+    "-mthumb",
+    "-mfpu=fpv4-sp-d16",
+    "-mfloat-abi=hard",
+    "-O2",
+    "-ffreestanding",
+    "-nostdlib",
+    "-ffp-contract=off",
+    "-fstack-usage",
+    "-Wall",
+    "-Wextra"
+  ],
+  "symbols_bytes": {
+    "a1": 12,
+    "a2": 12,
+    "b0": 12,
+    "b1": 12,
+    "b2": 12,
+    "ECG_Filter_Init": 16,
+    "Fault_Init": 16,
+    "RPeak_Init": 40,
+    "sort_floats": 92,
+    "ECG_Filter_Process": 108,
+    "HR_Estimate_Raw": 168,
+    "print_kv": 180,
+    "HR_Estimate_RR_Filtered": 240,
+    "RPeak_Process": 248,
+    "Fault_Detect_Full": 256,
+    "HR_Estimate_Mitigated": 488,
+    "main": 1014,
+    "fault_ground_truth": 6000,
+    "dt_ms": 24000,
+    "ecg_data": 24000,
+    "sensor_hr": 24000,
+    "spo2_data": 24000
+  },
+  "su_stack_bytes": {
+    "ECG_Filter_Init": 0,
+    "ECG_Filter_Process": 12,
+    "Fault_Init": 0,
+    "Fault_Detect_Full": 0,
+    "sort_floats": 8,
+    "HR_Estimate_Raw": 264,
+    "HR_Estimate_RR_Filtered": 272,
+    "HR_Estimate_Mitigated": 288,
+    "print_kv": 96,
+    "main": 2800,
+    "RPeak_Init": 0,
+    "RPeak_Process": 0
+  },
+  "qemu_returncode": 0,
+  "detected_hwm_tokens": [
+    "3096"
+  ]
+}
