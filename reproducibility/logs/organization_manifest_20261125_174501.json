@@ -1,0 +1,200 @@
+[
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/Paper.pdf",
+    "destination": "/root/Wearable_Health_Monitor/paper/previous_versions/Paper.pdf",
+    "sha256": "660b13f9cb228adc1715fc9e33f99d74ae3059bbbc7455a2a2d6b24d1305042f",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/Paper (5).pdf",
+    "destination": "/root/Wearable_Health_Monitor/paper/previous_versions/Paper (5).pdf",
+    "sha256": "c0fa30316fe520e0187da30a8a7c1dd4319c8bf993d5abf564d13b0a143143f8",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/paper_with_figures_overleaf.zip",
+    "destination": "/root/Wearable_Health_Monitor/paper/previous_versions/paper_with_figures_overleaf.zip",
+    "sha256": "ec7fdd65e012b9450bb2f233ab2ba305f5b21831778995d5604a4dc4484f85ea",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/final_paper_figures.tar.gz",
+    "destination": "/root/Wearable_Health_Monitor/paper/figures/final_paper_figures.tar.gz",
+    "sha256": "41548b1eb03b201a743e9e0cb36ea218c7f7b670573d1a874db40a45e16463f7",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/original_figure_sources.tar.gz",
+    "destination": "/root/Wearable_Health_Monitor/paper/figures/original_figure_sources.tar.gz",
+    "sha256": "800154d7d87d5261425833de949b54d1be4f3fce9d6c53c887199ea559a32159",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/final_verified_paper_assets.tar.gz",
+    "destination": "/root/Wearable_Health_Monitor/paper/figures/final_verified_paper_assets.tar.gz",
+    "sha256": "a6e9093f5f7f292d5de22c35f07f77a6819100b3a2e53b0816170a6edfc15efd",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/paper_ref.pdf",
+    "destination": "/root/Wearable_Health_Monitor/paper/references/paper_ref.pdf",
+    "sha256": "24f41f4d6435b4778b50f4a3610d48cec3cd75b0db238defb9c0714a09bca2ce",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/physionet_input_verification.json",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/verification/physionet_input_verification.json",
+    "sha256": "7be53285469b4bdb82433ccefd18cee31d5d4d9321aecdfad3b645ee1aea5ffb",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/physionet_verification.log",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/verification/physionet_verification.log",
+    "sha256": "07468f0c638b1ea0986c739ab90a1947be56c9d8bc2a94989aae2233113b4347",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/final_numerical_results.json",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/verification/final_numerical_results.json",
+    "sha256": "4731cf388ab32b63e7d6e017a579159e95232a0f2a9f5dfb57f6c98829a98572",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/final_callgraph_check.txt",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/verification/final_callgraph_check.txt",
+    "sha256": "0800b8e2fc6ef30414b3ed48fb26cb59ba74ae477844ad6d4764a8ae0e685b93",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/final_technical_check.txt",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/verification/final_technical_check.txt",
+    "sha256": "1ca443e3122beaeba2f80c4033701936edf2e8d10260eab3da0708029da7a7aa",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/stale_confusion_matrices.json",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/verification/stale_confusion_matrices.json",
+    "sha256": "e25959054f02a37459d6e8aa7e3572e7ab14b80460f35269dd38d81442169574",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/refractory_git_history.txt",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/verification/refractory_git_history.txt",
+    "sha256": "5f73f169744ca0661e68d5fb10287e07aef7293a8092c40e06d6fb1312f0d559",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/audit_v5_results.tar.gz",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/evidence/audit_v5_results.tar.gz",
+    "sha256": "f1a8c08e40ba1130e14ac4885cb45c16e4909644f8245f1d13fedeb614878ff9",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/audit_v6_results.tar.gz",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/evidence/audit_v6_results.tar.gz",
+    "sha256": "7e24ded501d47db64a1eed421fe2ef060de107a23fc864ee84913906eae3d3bb",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/paper_provenance_evidence.tar.gz",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/evidence/paper_provenance_evidence.tar.gz",
+    "sha256": "bcd3f5735db741468e9941d8440013de190cb3fb1c447e06d2efcbdfbe96e3cc",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/paper_revision_evidence.tar.gz",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/evidence/paper_revision_evidence.tar.gz",
+    "sha256": "0df8fc67afb7eda161cbee85c2ddfa5899893b0cfbc64165f7e6408d79408ac4",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/audit_v5_clinical_execution.log",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/logs/audit_v5_clinical_execution.log",
+    "sha256": "8e19ae6595d7c430d737b28f8149ccf6f3f4b1734055714a96450b146bea6dd9",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/audit_v5_execution.log",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/logs/audit_v5_execution.log",
+    "sha256": "0c95c71be7c01b30d242d722fc93afe2822554d987b25caeb65893773a77a7ef",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/primary_benchmark_execution.log",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/logs/primary_benchmark_execution.log",
+    "sha256": "3ffa005286238929573e8a19a872a762fef0364da8d1d671f9126f11066ce25a",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/pt_style_execution.log",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/logs/pt_style_execution.log",
+    "sha256": "1ce2369f1e31dd015201e1a5680db0ee00053cb2882e9fd3137ec68ce5d4e23d",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/refractory_firmware_execution.log",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/logs/refractory_firmware_execution.log",
+    "sha256": "3924ede3ca152dd6b1adbb57231980385d8d8a92850c8874efac1f8e3b1fd668",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/project_inventory.txt",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/logs/project_inventory.txt",
+    "sha256": "f1880123f597a671a96e98794f2796d4c71a69fcab5ea4dce8b8c2a7d7ab4ab3",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/final_numerical_audit.py",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/scripts/final_numerical_audit.py",
+    "sha256": "89758faad4bd798833e8eb5064744378853baa211b83a5cd580eeec6e59ac703",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/regenerate_final_paper_figures.py",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/scripts/regenerate_final_paper_figures.py",
+    "sha256": "92f9043a66914da4abcb2d56f365a2d4663382ac8406b3eb0c0243348c3cbc27",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/regenerate_final_paper_figures_refined.py",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/scripts/regenerate_final_paper_figures_refined.py",
+    "sha256": "73d3de801eadbddd22a187184f2a54328cad178d820019b5ed59aad2e3d3852d",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/resolve_remaining_audit_points_original.py",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/scripts/resolve_remaining_audit_points_original.py",
+    "sha256": "beb02a0efcc5e842e3fbdda79d2587a9b745f80addc659515a533f1f7b999273",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/run_final_primary_benchmark.py",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/scripts/run_final_primary_benchmark.py",
+    "sha256": "7e1fb817478961d41f998325bc765233b9de4ab81a7517dd614fb7586f03e590",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/run_final_revision_audit.py",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/scripts/run_final_revision_audit.py",
+    "sha256": "4e8d20177c50290d6fc1e67c9a62e2736ce18846814fd8dc4b21534467baca6c",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/run_pt_style_pipeline_audit.py",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/scripts/run_pt_style_pipeline_audit.py",
+    "sha256": "7f233ebd69b29a7ef2ab3c74b28c07b3ac8d4528df809e983db91718cc8dd06b",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/run_refractory_firmware_audit.py",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/scripts/run_refractory_firmware_audit.py",
+    "sha256": "8305c9f6e1467265ddf4af4827236b862ed565de4b953bce462ad6663ec76f0a",
+    "status": "verified_and_moved"
+  },
+  {
+    "source": "/mnt/c/Users/suvar/Downloads/verify_physionet_inputs.py",
+    "destination": "/root/Wearable_Health_Monitor/reproducibility/scripts/verify_physionet_inputs.py",
+    "sha256": "e0ed440044f58d7c3cd2ce4164bd918d1fbd16613a046f10b2f2fb7d6d1ec5fb",
+    "status": "verified_and_moved"
+  }
+]

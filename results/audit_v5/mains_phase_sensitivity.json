@@ -1,0 +1,65 @@
+[
+  {
+    "frequency": 50,
+    "phase_deg": 0,
+    "injected_rms": 1.7900524950112138e-13,
+    "injected_peak": 7.284897384267214e-13,
+    "peaks": 79,
+    "rr_mae": 0.201666666666668,
+    "raw_mae": 0.201666666666668
+  },
+  {
+    "frequency": 50,
+    "phase_deg": 30,
+    "injected_rms": 0.1250000000000701,
+    "injected_peak": 0.12500000000070843,
+    "peaks": 79,
+    "rr_mae": 0.201666666666668,
+    "raw_mae": 0.201666666666668
+  },
+  {
+    "frequency": 50,
+    "phase_deg": 45,
+    "injected_rms": 0.17677669529664686,
+    "injected_peak": 0.17677669529709159,
+    "peaks": 79,
+    "rr_mae": 0.201666666666668,
+    "raw_mae": 0.201666666666668
+  },
+  {
+    "frequency": 50,
+    "phase_deg": 60,
+    "injected_rms": 0.21650635094616008,
+    "injected_peak": 0.21650635094656345,
+    "peaks": 79,
+    "rr_mae": 0.201666666666668,
+    "raw_mae": 0.201666666666668
+  },
+  {
+    "frequency": 50,
+    "phase_deg": 90,
+    "injected_rms": 0.25,
+    "injected_peak": 0.25,
+    "peaks": 79,
+    "rr_mae": 0.201666666666668,
+    "raw_mae": 0.201666666666668
+  },
+  {
+    "frequency": 49,
+    "phase_deg": 0,
+    "injected_rms": 0.1767766952966368,
+    "injected_peak": 0.25,
+    "peaks": 79,
+    "rr_mae": 0.201666666666668,
+    "raw_mae": 0.201666666666668
+  },
+  {
+    "frequency": 48,
+    "phase_deg": 0,
+    "injected_rms": 0.17677669529663384,
+    "injected_peak": 0.24950668210711655,
+    "peaks": 79,
+    "rr_mae": 0.201666666666668,
+    "raw_mae": 0.201666666666668
+  }
+]

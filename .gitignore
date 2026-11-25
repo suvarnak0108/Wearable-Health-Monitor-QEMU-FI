@@ -8,3 +8,34 @@ __pycache__/
 *.aux
 *.log
 *.out
+
+# Local research backups and downloaded datasets
+/baseline_snapshot/
+/data_cache/
+/extended_validation/independent_clinical/inputs/
+/extended_validation/severity_analysis/inputs/
+/paper/previous_versions/
+/paper/references/
+
+# Temporary files
+*.bak
+*.tmp
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.toc
+*.blg
+*.bbl
+.DS_Store
+
+# Preserve experimental evidence
+!/reproducibility/**/*.log
+!/extended_validation/**/*.log
+!/results/**/*.log
+
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key

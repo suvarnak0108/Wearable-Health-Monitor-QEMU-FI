@@ -1,0 +1,319 @@
+1/80 109_clean: beat F1=99.45, RR MAE=0.614
+2/80 109_burst: beat F1=99.45, RR MAE=0.614
+3/80 109_em_drift: beat F1=99.45, RR MAE=0.373
+4/80 109_triple: beat F1=99.45, RR MAE=0.729
+5/80 111_clean: beat F1=99.27, RR MAE=0.607
+6/80 111_burst: beat F1=99.27, RR MAE=0.607
+7/80 111_em_drift: beat F1=97.14, RR MAE=0.688
+8/80 111_triple: beat F1=98.55, RR MAE=0.671
+9/80 112_clean: beat F1=100.00, RR MAE=0.204
+10/80 112_burst: beat F1=100.00, RR MAE=0.204
+11/80 112_em_drift: beat F1=100.00, RR MAE=0.004
+12/80 112_triple: beat F1=100.00, RR MAE=0.204
+13/80 114_clean: beat F1=97.30, RR MAE=0.387
+14/80 114_burst: beat F1=97.30, RR MAE=0.387
+15/80 114_em_drift: beat F1=84.55, RR MAE=19.459
+16/80 114_triple: beat F1=93.81, RR MAE=0.619
+17/80 116_clean: beat F1=98.72, RR MAE=0.089
+18/80 116_burst: beat F1=98.72, RR MAE=0.089
+19/80 116_em_drift: beat F1=98.72, RR MAE=0.089
+20/80 116_triple: beat F1=98.72, RR MAE=0.089
+21/80 117_clean: beat F1=100.00, RR MAE=0.275
+22/80 117_burst: beat F1=100.00, RR MAE=0.275
+23/80 117_em_drift: beat F1=100.00, RR MAE=0.310
+24/80 117_triple: beat F1=100.00, RR MAE=0.310
+25/80 118_clean: beat F1=100.00, RR MAE=0.428
+26/80 118_burst: beat F1=100.00, RR MAE=0.428
+27/80 118_em_drift: beat F1=100.00, RR MAE=0.285
+28/80 118_triple: beat F1=100.00, RR MAE=0.285
+29/80 121_clean: beat F1=100.00, RR MAE=0.002
+30/80 121_burst: beat F1=100.00, RR MAE=0.002
+31/80 121_em_drift: beat F1=98.36, RR MAE=0.307
+32/80 121_triple: beat F1=99.17, RR MAE=0.307
+33/80 122_clean: beat F1=100.00, RR MAE=0.217
+34/80 122_burst: beat F1=100.00, RR MAE=0.217
+35/80 122_em_drift: beat F1=100.00, RR MAE=0.106
+36/80 122_triple: beat F1=100.00, RR MAE=0.219
+37/80 123_clean: beat F1=100.00, RR MAE=0.101
+38/80 123_burst: beat F1=100.00, RR MAE=0.101
+39/80 123_em_drift: beat F1=98.00, RR MAE=1.116
+40/80 123_triple: beat F1=98.99, RR MAE=0.791
+41/80 124_clean: beat F1=100.00, RR MAE=0.208
+42/80 124_burst: beat F1=100.00, RR MAE=0.208
+43/80 124_em_drift: beat F1=96.97, RR MAE=0.104
+44/80 124_triple: beat F1=100.00, RR MAE=0.205
+45/80 201_clean: beat F1=100.00, RR MAE=0.003
+46/80 201_burst: beat F1=100.00, RR MAE=0.003
+47/80 201_em_drift: beat F1=100.00, RR MAE=0.003
+48/80 201_triple: beat F1=100.00, RR MAE=0.003
+49/80 202_clean: beat F1=99.05, RR MAE=0.122
+50/80 202_burst: beat F1=99.05, RR MAE=0.122
+51/80 202_em_drift: beat F1=94.44, RR MAE=1.582
+52/80 202_triple: beat F1=95.33, RR MAE=0.447
+53/80 203_clean: beat F1=95.92, RR MAE=5.117
+54/80 203_burst: beat F1=95.92, RR MAE=5.117
+55/80 203_em_drift: beat F1=94.42, RR MAE=5.356
+56/80 203_triple: beat F1=94.90, RR MAE=6.686
+57/80 205_clean: beat F1=100.00, RR MAE=0.342
+58/80 205_burst: beat F1=100.00, RR MAE=0.342
+59/80 205_em_drift: beat F1=99.44, RR MAE=0.335
+60/80 205_triple: beat F1=100.00, RR MAE=0.335
+61/80 207_clean: beat F1=76.11, RR MAE=29.157
+62/80 207_burst: beat F1=76.11, RR MAE=29.157
+63/80 207_em_drift: beat F1=77.48, RR MAE=28.630
+64/80 207_triple: beat F1=77.48, RR MAE=27.097
+65/80 208_clean: beat F1=94.53, RR MAE=2.932
+66/80 208_burst: beat F1=94.53, RR MAE=2.932
+67/80 208_em_drift: beat F1=95.05, RR MAE=3.213
+68/80 208_triple: beat F1=94.53, RR MAE=2.595
+69/80 209_clean: beat F1=100.00, RR MAE=0.743
+70/80 209_burst: beat F1=100.00, RR MAE=0.743
+71/80 209_em_drift: beat F1=100.00, RR MAE=0.488
+72/80 209_triple: beat F1=100.00, RR MAE=0.620
+73/80 210_clean: beat F1=96.63, RR MAE=2.563
+74/80 210_burst: beat F1=96.63, RR MAE=2.563
+75/80 210_em_drift: beat F1=95.51, RR MAE=2.472
+76/80 210_triple: beat F1=96.63, RR MAE=2.575
+77/80 212_clean: beat F1=100.00, RR MAE=0.345
+78/80 212_burst: beat F1=100.00, RR MAE=0.345
+79/80 212_em_drift: beat F1=99.45, RR MAE=0.346
+80/80 212_triple: beat F1=99.45, RR MAE=0.346
+{
+  "clean": {
+    "beat_sensitivity": {
+      "n": 20,
+      "mean": 98.30976007912264,
+      "sd": 3.092064201257717
+    },
+    "beat_ppv": {
+      "n": 20,
+      "mean": 97.78015642095599,
+      "sd": 8.219410432507823
+    },
+    "beat_f1": {
+      "n": 20,
+      "mean": 97.84838143362819,
+      "sd": 5.3654991893519615
+    },
+    "fault_precision": null,
+    "fault_recall": null,
+    "fault_f1": null,
+    "fpr": {
+      "n": 20,
+      "mean": 5.774166666666668,
+      "sd": 14.303949353422054
+    },
+    "raw_mae": {
+      "n": 20,
+      "mean": 2.4848226262202666,
+      "sd": 7.7827503574273535
+    },
+    "rr_mae": {
+      "n": 20,
+      "mean": 2.2226678643155044,
+      "sd": 6.467543904698056
+    },
+    "hold_mae": {
+      "n": 20,
+      "mean": 2.1224559671535386,
+      "sd": 4.6848582435589
+    },
+    "sqi_mean": {
+      "n": 20,
+      "mean": 78.83716666666666,
+      "sd": 24.452892306115913
+    },
+    "sqi_below50_windows": {
+      "n": 20,
+      "mean": 0.95,
+      "sd": 1.79105966869954
+    }
+  },
+  "burst": {
+    "beat_sensitivity": {
+      "n": 20,
+      "mean": 98.30976007912264,
+      "sd": 3.092064201257717
+    },
+    "beat_ppv": {
+      "n": 20,
+      "mean": 97.78015642095599,
+      "sd": 8.219410432507823
+    },
+    "beat_f1": {
+      "n": 20,
+      "mean": 97.84838143362819,
+      "sd": 5.3654991893519615
+    },
+    "fault_precision": {
+      "n": 20,
+      "mean": 74.05680855366273,
+      "sd": 38.135918228574205
+    },
+    "fault_recall": {
+      "n": 20,
+      "mean": 100.0,
+      "sd": 0.0
+    },
+    "fault_f1": {
+      "n": 20,
+      "mean": 78.10779134587943,
+      "sd": 33.901907825278045
+    },
+    "fpr": {
+      "n": 20,
+      "mean": 5.794067796610169,
+      "sd": 14.359318659187785
+    },
+    "raw_mae": {
+      "n": 20,
+      "mean": 2.4848226262202666,
+      "sd": 7.7827503574273535
+    },
+    "rr_mae": {
+      "n": 20,
+      "mean": 2.2226678643155044,
+      "sd": 6.467543904698056
+    },
+    "hold_mae": {
+      "n": 20,
+      "mean": 2.056789300486872,
+      "sd": 4.508272408984434
+    },
+    "sqi_mean": {
+      "n": 20,
+      "mean": 77.51625000000001,
+      "sd": 24.061024080200987
+    },
+    "sqi_below50_windows": {
+      "n": 20,
+      "mean": 1.0,
+      "sd": 1.8918106058538346
+    }
+  },
+  "em_drift": {
+    "beat_sensitivity": {
+      "n": 20,
+      "mean": 97.87199683236005,
+      "sd": 3.1605966426116745
+    },
+    "beat_ppv": {
+      "n": 20,
+      "mean": 95.50106528291279,
+      "sd": 9.003526046896326
+    },
+    "beat_f1": {
+      "n": 20,
+      "mean": 96.44898495541382,
+      "sd": 5.744685883233716
+    },
+    "fault_precision": {
+      "n": 20,
+      "mean": 84.89590561312048,
+      "sd": 22.457229754788443
+    },
+    "fault_recall": {
+      "n": 20,
+      "mean": 97.19333333333333,
+      "sd": 8.074474979763727
+    },
+    "fault_f1": {
+      "n": 20,
+      "mean": 89.20182097827815,
+      "sd": 17.293947955374264
+    },
+    "fpr": {
+      "n": 20,
+      "mean": 9.822222222222223,
+      "sd": 18.284529050514
+    },
+    "raw_mae": {
+      "n": 20,
+      "mean": 3.5523614818365923,
+      "sd": 8.328286585550245
+    },
+    "rr_mae": {
+      "n": 20,
+      "mean": 3.2632781485032587,
+      "sd": 7.382739801041738
+    },
+    "hold_mae": {
+      "n": 20,
+      "mean": 2.516989763510292,
+      "sd": 5.491585386043804
+    },
+    "sqi_mean": {
+      "n": 20,
+      "mean": 74.26,
+      "sd": 23.38663348434302
+    },
+    "sqi_below50_windows": {
+      "n": 20,
+      "mean": 1.25,
+      "sd": 1.7733405882980469
+    }
+  },
+  "triple": {
+    "beat_sensitivity": {
+      "n": 20,
+      "mean": 98.0738082560454,
+      "sd": 3.203940570648386
+    },
+    "beat_ppv": {
+      "n": 20,
+      "mean": 96.99030548779983,
+      "sd": 7.885652282914726
+    },
+    "beat_f1": {
+      "n": 20,
+      "mean": 97.34988088279442,
+      "sd": 5.131971737043068
+    },
+    "fault_precision": {
+      "n": 20,
+      "mean": 90.50434515025336,
+      "sd": 19.13040414776632
+    },
+    "fault_recall": {
+      "n": 20,
+      "mean": 98.45222929936305,
+      "sd": 4.021912686608034
+    },
+    "fault_f1": {
+      "n": 20,
+      "mean": 93.05484040915852,
+      "sd": 14.01513199908858
+    },
+    "fpr": {
+      "n": 20,
+      "mean": 7.036117381489842,
+      "sd": 17.397225595649907
+    },
+    "raw_mae": {
+      "n": 20,
+      "mean": 2.4960287875015394,
+      "sd": 7.143309942940393
+    },
+    "rr_mae": {
+      "n": 20,
+      "mean": 2.256624025596778,
+      "sd": 6.042266617122819
+    },
+    "hold_mae": {
+      "n": 20,
+      "mean": 2.2305933210953635,
+      "sd": 4.727930163412858
+    },
+    "sqi_mean": {
+      "n": 20,
+      "mean": 75.75150000000001,
+      "sd": 23.20726331213132
+    },
+    "sqi_below50_windows": {
+      "n": 20,
+      "mean": 1.15,
+      "sd": 1.8431951662948316
+    }
+  }
+}
+COMPLETE: 80 trials

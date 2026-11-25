@@ -1,0 +1,15 @@
+{
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "source_sha256": {
+    "simulation/resolve_remaining_audit_points.py": "8313d7c78aff30979cf1ef8401c11e71ae6131213d9ef4d7a3bcc9136ebb30b3",
+    "simulation/run_unified_master_pipeline.py": "39e5ec42c38db17a03e5f333f017ac90fe2b6da64cc5a4e1d10cca643223c965",
+    "firmware/src/ecg_filter.c": "e8bc89ed41ab3ce5f103e03564d7d9532e5273991639b34efbfd9d422ede4067",
+    "firmware/src/fault_detector.c": "8dce07c644c45dd180eb292af850a99972d126819706ea0a307fe22318c2d8ee",
+    "firmware/src/hr_estimator.c": "feae7175a107130426a106cfb5b9227ef5144834d11f51e873e349f66a900f40",
+    "firmware/src/main.c": "5657218698d7d0351ed02e8f16c2f9da9fa9584eef903301601fc9e6fbd622fb",
+    "firmware/src/qemu_test.c": "e613971148f7e7ce7a991d743a94ccf349208d2b5c3f0db28fda6a47d1ed8818",
+    "firmware/src/r_peak.c": "9b8a42ed8d83ddef5463287cabb46ef73bd01f231a7b041b02ccb3037123210b"
+  }
+}

@@ -1,0 +1,200 @@
+[
+  {
+    "record": "109",
+    "exact_match": true,
+    "cache_sha256": "ebf042ac1a98b932313aceeb7ee6263407b6b9d1e12807bd806941cf64f0d334",
+    "symbols": {
+      "+": 1,
+      "L": 88,
+      "F": 2,
+      "V": 1
+    }
+  },
+  {
+    "record": "111",
+    "exact_match": true,
+    "cache_sha256": "265980f56a0ddec0446419717335e13ba9972132ee9222c438c0a60783fbaab8",
+    "symbols": {
+      "+": 1,
+      "L": 69
+    }
+  },
+  {
+    "record": "112",
+    "exact_match": true,
+    "cache_sha256": "90b993aaae448c35c0ebc38f4726e472d76d1945a6f97fef907660f755a7f9e7",
+    "symbols": {
+      "+": 1,
+      "N": 85
+    }
+  },
+  {
+    "record": "114",
+    "exact_match": true,
+    "cache_sha256": "0b4e5b16e2dd7a1993aec983c30a6c5906970b8dd8ec46f2d8fbaaaf9a21e5e4",
+    "symbols": {
+      "+": 1,
+      "N": 54
+    }
+  },
+  {
+    "record": "116",
+    "exact_match": true,
+    "cache_sha256": "03fbb3c28ca0a52a73417865fcd53458b6a3ac1966d2e9580c3cb060ee363503",
+    "symbols": {
+      "+": 1,
+      "N": 78
+    }
+  },
+  {
+    "record": "117",
+    "exact_match": true,
+    "cache_sha256": "9cc187c2a087a0fba35e68dc307db3dcd98f2d35d8fa4a43b05abe5568610088",
+    "symbols": {
+      "+": 1,
+      "N": 50
+    }
+  },
+  {
+    "record": "118",
+    "exact_match": true,
+    "cache_sha256": "ab0cc256d4d0eb53b0d9b3b0eb822b2b2e8adab7cb69e787a88334fc246bea25",
+    "symbols": {
+      "+": 1,
+      "R": 72,
+      "V": 1
+    }
+  },
+  {
+    "record": "121",
+    "exact_match": true,
+    "cache_sha256": "ddd527713b374207da512930a2e190f725a4e18f045fc6e1146191176b6a94b3",
+    "symbols": {
+      "+": 1,
+      "N": 60
+    }
+  },
+  {
+    "record": "122",
+    "exact_match": true,
+    "cache_sha256": "7b80800ae55befd0085ce5383c07c50fccd9cd81d602350b258ae7bffa88d024",
+    "symbols": {
+      "+": 1,
+      "N": 87
+    }
+  },
+  {
+    "record": "123",
+    "exact_match": true,
+    "cache_sha256": "7ddf92058bfa42d202369f16b669363c578dd7331e0c8ce7a8b8f6c520dda12b",
+    "symbols": {
+      "+": 1,
+      "N": 49
+    }
+  },
+  {
+    "record": "124",
+    "exact_match": true,
+    "cache_sha256": "7a3c5a05ede866c94d8930f662b4f9251a71700be285bf83e8d66a94867cc3d9",
+    "symbols": {
+      "+": 1,
+      "R": 49
+    }
+  },
+  {
+    "record": "201",
+    "exact_match": true,
+    "cache_sha256": "4eb609f0e2fab87bbb28032f0160d097573379f1cb102e28183d2ab0707ec74a",
+    "symbols": {
+      "+": 1,
+      "N": 89,
+      "a": 1
+    }
+  },
+  {
+    "record": "202",
+    "exact_match": true,
+    "cache_sha256": "1d047b43bc65b6a9f1113a3c388614dd22a91e089f7abff6cbb2631164621a6c",
+    "symbols": {
+      "+": 1,
+      "N": 52,
+      "V": 1
+    }
+  },
+  {
+    "record": "203",
+    "exact_match": true,
+    "cache_sha256": "9e684cc5944a8614a4d35d49a548a7f44c6d46ddffa59f5495cadd7e58af984b",
+    "symbols": {
+      "+": 3,
+      "~": 4,
+      "N": 92,
+      "V": 10
+    }
+  },
+  {
+    "record": "205",
+    "exact_match": true,
+    "cache_sha256": "4b97e05313b0a845232e91bba1aa60d8f036909fde4a94d63a1c8cbdd84434f7",
+    "symbols": {
+      "+": 1,
+      "N": 89
+    }
+  },
+  {
+    "record": "207",
+    "exact_match": true,
+    "cache_sha256": "e4bb9da492956f52bdf79654c039c773f039f9efa00741115b14dd089234142a",
+    "symbols": {
+      "+": 6,
+      "R": 20,
+      "V": 23,
+      "L": 2,
+      "[": 2,
+      "!": 43,
+      "]": 1
+    }
+  },
+  {
+    "record": "208",
+    "exact_match": true,
+    "cache_sha256": "6a52d66a30d4733b9bd21ebd84c79d83c20a48a3752a71ee5e8e2906aecae8ed",
+    "symbols": {
+      "+": 1,
+      "F": 12,
+      "V": 30,
+      "N": 64,
+      "~": 4
+    }
+  },
+  {
+    "record": "209",
+    "exact_match": true,
+    "cache_sha256": "611ccd231f32fffbdeca3df07e8a5ab4c280f24defbe01feeb2723b58051be92",
+    "symbols": {
+      "+": 1,
+      "N": 92,
+      "A": 1
+    }
+  },
+  {
+    "record": "210",
+    "exact_match": true,
+    "cache_sha256": "f0b9afd49d41fdb6951bda44f391f9e3d5cd76ff15b3addf7804f3cf02df2767",
+    "symbols": {
+      "+": 1,
+      "N": 84,
+      "V": 7,
+      "F": 1
+    }
+  },
+  {
+    "record": "212",
+    "exact_match": true,
+    "cache_sha256": "71ce2bafae2130aa2bb059f251bf9a1c33a52551aac66a7ceb6962c8f83ea9b0",
+    "symbols": {
+      "+": 1,
+      "R": 90
+    }
+  }
+]

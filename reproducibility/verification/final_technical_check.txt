@@ -1,0 +1,166 @@
+=== Git status ===
+ M results/audit_v4/unified_noise_and_refractory.json
+ M results/fig1_architecture.png
+ M results/fig2_waveform_comparison.png
+ M results/fig3_fixed_vs_adaptive.png
+ M simulation/resolve_remaining_audit_points.py
+?? data_cache/
+?? main.fdb_latexmk
+?? results/audit_v5/
+?? results/audit_v6/
+?? results/final_paper_figures/
+?? results/final_revision/
+?? simulation/regenerate_all_cleanfigs.py
+?? simulation/regenerate_figures.py
+?? simulation/regenerate_final_paper_figures.py
+?? simulation/results/
+?? simulation/run_final_primary_benchmark.py
+?? simulation/run_final_revision_audit.py
+?? simulation/run_final_revision_audit.py.bak
+?? simulation/run_pt_style_pipeline_audit.py
+?? simulation/run_refractory_firmware_audit.py
+?? texput.fls
+=== ELF hashes ===
+7ed24171dbf016ec1ce0b52cf1c74adf36b869cfd26265f6d78c3edeb7a69e04  firmware/audit_verified_m4.elf
+7ed24171dbf016ec1ce0b52cf1c74adf36b869cfd26265f6d78c3edeb7a69e04  firmware/firmware_m4.elf
+=== ELF sections ===
+firmware/audit_verified_m4.elf  :
+section             size        addr
+.isr_vector            8           0
+.text             105148           8
+.data                  0   536870912
+.bss                   0   536870912
+.ARM.attributes       50           0
+.debug_line           95           0
+.debug_line_str       96           0
+.debug_info           36           0
+.debug_abbrev         20           0
+.debug_aranges        32           0
+.debug_str           108           0
+Total             105593
+
+
+=== Function sizes ===
+00002940 00000012 t a1
+00002952 00000012 t a2
+00002964 00000012 t b0
+00002976 00000012 t b1
+00002988 00000012 t b2
+00000008 00000016 T ECG_Filter_Init
+00000132 00000016 T Fault_Init
+00002592 00000040 T RPeak_Init
+00000404 00000092 t sort_floats
+00000024 00000108 T ECG_Filter_Process
+00000496 00000168 T HR_Estimate_Raw
+00001392 00000180 t print_kv
+00000664 00000240 T HR_Estimate_RR_Filtered
+00002632 00000248 T RPeak_Process
+00000148 00000256 T Fault_Detect_Full
+00000904 00000488 T HR_Estimate_Mitigated
+00001572 00001014 T main
+00003156 00006000 t fault_ground_truth
+00009156 00024000 t dt_ms
+00081156 00024000 t ecg_data
+00057156 00024000 t sensor_hr
+00033156 00024000 t spo2_data
+=== Stack usage ===
+/root/Wearable_Health_Monitor/firmware/src/r_peak.c:7:6:RPeak_Init	0	static
+/root/Wearable_Health_Monitor/firmware/src/r_peak.c:16:9:RPeak_Process	0	static
+/root/Wearable_Health_Monitor/firmware/src/main.c:26:13:print_kv	96	static
+/root/Wearable_Health_Monitor/firmware/src/main.c:64:5:main	2800	static
+/root/Wearable_Health_Monitor/firmware/src/fault_detector.c:5:6:Fault_Init	0	static
+/root/Wearable_Health_Monitor/firmware/src/fault_detector.c:14:11:Fault_Detect_Full	0	static
+/root/Wearable_Health_Monitor/firmware/src/ecg_filter.c:10:6:ECG_Filter_Init	0	static
+/root/Wearable_Health_Monitor/firmware/src/ecg_filter.c:17:7:ECG_Filter_Process	12	static
+/root/Wearable_Health_Monitor/firmware/src/hr_estimator.c:3:13:sort_floats	8	static
+/root/Wearable_Health_Monitor/firmware/src/hr_estimator.c:15:7:HR_Estimate_Raw	264	static
+/root/Wearable_Health_Monitor/firmware/src/hr_estimator.c:27:7:HR_Estimate_RR_Filtered	272	static
+/root/Wearable_Health_Monitor/firmware/src/hr_estimator.c:46:7:HR_Estimate_Mitigated	288	static
+=== Fault detector ===
+#include "wearable_monitor.h"
+
+static inline float fabsf_local(float x) { return (x < 0.0f) ? -x : x; }
+
+void Fault_Init(FaultDetectorState *st) {
+    st->prev_ecg = 0.0f;
+    st->prev_hr = 0.0f;
+    st->prev_spo2 = 0.0f;
+    st->stale_ecg = 0U;
+    st->stale_hr = 0U;
+    st->stale_spo2 = 0U;
+}
+
+FaultCode Fault_Detect_Full(FaultDetectorState *st, uint32_t dt_ms, float ecg,
+                            float sensor_hr, float spo2, float ecg_hr) {
+    if (dt_ms >= 50U) {
+        st->stale_ecg = 0U;
+        return FAULT_COMM_BURST;
+    }
+    if (dt_ms > 15U) {
+        st->stale_ecg = 0U;
+        return FAULT_MISSING_SAMPLE;
+    }
+    if (sensor_hr != sensor_hr || spo2 != spo2 || ecg != ecg ||
+        sensor_hr < 30.0f || sensor_hr > 200.0f ||
+        spo2 < 70.0f || spo2 > 100.0f) {
+        return FAULT_OUT_OF_RANGE;
+    }
+    /* High-rate (100 Hz) ECG ADC freeze >= 150 samples (1.5 s > 1 full cardiac cycle) */
+    if (fabsf_local(ecg - st->prev_ecg) < 1e-6f) {
+        if (st->stale_ecg < 250U) st->stale_ecg++;
+    } else {
+        st->stale_ecg = 0U;
+    }
+    st->prev_ecg = ecg;
+    if (st->stale_ecg >= 150U) {
+        return FAULT_STALE_DATA;
+    }
+    /* Cross-modal HR consistency check */
+    if (ecg_hr > 0.0f && fabsf_local(sensor_hr - ecg_hr) > 12.0f) {
+        return FAULT_HR_INCONSISTENCY;
+    }
+    return FAULT_NONE;
+}
+=== R-peak detector ===
+#include "wearable_monitor.h"
+
+/* 300 ms refractory period @ 100 Hz -> supports up to 200 BPM */
+#define REFRACTORY_SAMPLES 30U
+#define MIN_ENERGY_FLOOR   0.012f
+
+void RPeak_Init(RPeakDetectorState *st) {
+    st->spki = 0.20f;
+    st->npki = 0.01f;
+    st->threshold = 0.086f;
+    st->last_peak_idx = 0U;
+    st->prev_e1 = 0.0f;
+    st->prev_e2 = 0.0f;
+}
+
+uint8_t RPeak_Process(RPeakDetectorState *st, float y_filt, uint32_t idx) {
+    /* Full-wave quadratic energy captures both upright and inverted PVCs */
+    float e = y_filt * y_filt;
+    uint8_t detected = 0U;
+
+    if (idx >= 2U && e < st->prev_e1 && st->prev_e1 >= st->prev_e2) {
+        uint32_t cand = idx - 1U;
+        float e_peak = st->prev_e1;
+        uint32_t dt = cand - st->last_peak_idx;
+
+        if ((st->last_peak_idx == 0U || dt >= REFRACTORY_SAMPLES) && e_peak > st->threshold) {
+            st->spki = 0.125f * e_peak + 0.875f * st->spki;
+            float th = st->npki + 0.40f * (st->spki - st->npki);
+            st->threshold = (th < MIN_ENERGY_FLOOR) ? MIN_ENERGY_FLOOR : th;
+            st->last_peak_idx = cand;
+            detected = 1U;
+        } else if (e_peak > 0.0005f) {
+            st->npki = 0.125f * e_peak + 0.875f * st->npki;
+            float th = st->npki + 0.40f * (st->spki - st->npki);
+            st->threshold = (th < MIN_ENERGY_FLOOR) ? MIN_ENERGY_FLOOR : th;
+        }
+    }
+
+    st->prev_e2 = st->prev_e1;
+    st->prev_e1 = e;
+    return detected;
+}

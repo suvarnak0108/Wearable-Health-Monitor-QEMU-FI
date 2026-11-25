@@ -1,0 +1,325 @@
+=== ELF SHA-256 ===
+7ed24171dbf016ec1ce0b52cf1c74adf36b869cfd26265f6d78c3edeb7a69e04  firmware/audit_verified_m4.elf
+=== HR estimator source ===
+#include "wearable_monitor.h"
+
+static void sort_floats(float *arr, uint32_t n) {
+    for (uint32_t i = 1U; i < n; i++) {
+        float key = arr[i];
+        int32_t j = (int32_t)i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
+
+float HR_Estimate_Raw(const uint32_t *peaks, uint32_t count, float fs) {
+    if (count < 2U || fs <= 0.0f) return 0.0f;
+    float rr[64];
+    uint32_t n = (count - 1U > 64U) ? 64U : (count - 1U);
+    for (uint32_t i = 0U; i < n; i++) {
+        rr[i] = (float)(peaks[i + 1U] - peaks[i]);
+    }
+    sort_floats(rr, n);
+    float med = (n % 2U == 1U) ? rr[n / 2U] : 0.5f * (rr[n / 2U - 1U] + rr[n / 2U]);
+    return (med > 0.0f) ? (60.0f * fs / med) : 0.0f;
+}
+
+float HR_Estimate_RR_Filtered(const uint32_t *peaks, uint32_t count, float fs, float fallback_hr) {
+    if (count < 2U || fs <= 0.0f) return fallback_hr;
+    float rr[64];
+    uint32_t valid = 0U;
+    float min_rr = 0.30f * fs; /* 200 BPM */
+    float max_rr = 1.50f * fs; /* 40 BPM */
+
+    for (uint32_t i = 0U; i + 1U < count && valid < 64U; i++) {
+        float d = (float)(peaks[i + 1U] - peaks[i]);
+        if (d >= min_rr && d <= max_rr) {
+            rr[valid++] = d;
+        }
+    }
+    if (valid < 2U) return fallback_hr;
+    sort_floats(rr, valid);
+    float med = (valid % 2U == 1U) ? rr[valid / 2U] : 0.5f * (rr[valid / 2U - 1U] + rr[valid / 2U]);
+    return (med > 0.0f) ? (60.0f * fs / med) : fallback_hr;
+}
+
+float HR_Estimate_Mitigated(const uint32_t *peaks, uint32_t count, float fs,
+                            uint32_t fault_samples, uint32_t win_samples,
+                            float last_valid_hr, float *out_sqi) {
+    float rho_f = (win_samples > 0U) ? ((float)fault_samples / (float)win_samples) : 1.0f;
+    if (count < 2U || fs <= 0.0f) {
+        *out_sqi = 0.0f;
+        return last_valid_hr;
+    }
+
+    float rr[64];
+    uint32_t raw_rr = count - 1U;
+    uint32_t valid = 0U;
+    float min_rr = 0.30f * fs;
+    float max_rr = 1.50f * fs;
+
+    for (uint32_t i = 0U; i < raw_rr && valid < 64U; i++) {
+        float d = (float)(peaks[i + 1U] - peaks[i]);
+        if (d >= min_rr && d <= max_rr) {
+            rr[valid++] = d;
+        }
+    }
+
+    float ratio = (raw_rr > 0U) ? ((float)valid / (float)raw_rr) : 0.0f;
+    float reg_factor = 1.0f;
+    if (valid >= 2U) {
+        sort_floats(rr, valid);
+        float med = (valid % 2U == 1U) ? rr[valid / 2U] : 0.5f * (rr[valid / 2U - 1U] + rr[valid / 2U]);
+        float span = rr[valid - 1U] - rr[0U];
+        float rel_span = (med > 0.0f) ? (span / med) : 1.0f;
+        /* Penalize SQI proportionally to beat-to-beat RR spread (ectopy, T-wave double triggers, motion spikes) */
+        reg_factor = 1.0f - 0.65f * rel_span;
+        if (reg_factor < 0.15f) reg_factor = 0.15f;
+    } else {
+        reg_factor = 0.0f;
+    }
+
+    *out_sqi = 100.0f * (1.0f - rho_f) * ratio * reg_factor;
+
+    /* Engage hold-last-HR when RR intervals are insufficient, fault density > 25%, or SQI < 50% */
+    if (valid < 2U || rho_f > 0.25f || *out_sqi < 50.0f) {
+        return last_valid_hr;
+    }
+    float med = (valid % 2U == 1U) ? rr[valid / 2U] : 0.5f * (rr[valid / 2U - 1U] + rr[valid / 2U]);
+    return (med > 0.0f) ? (60.0f * fs / med) : last_valid_hr;
+}
+=== Main source ===
+#include "wearable_monitor.h"
+#include "qemu_dataset_independent.h"
+
+#define MAX_PEAKS 250U
+#define WIN_SAMPLES 1000U
+
+static void semihost_write0(const char *s) {
+    __asm__ volatile (
+        "mov r0, #0x04\n"
+        "mov r1, %0\n"
+        "bkpt #0xAB\n"
+        : : "r"(s) : "r0", "r1", "memory"
+    );
+}
+
+static void semihost_exit(void) {
+    __asm__ volatile (
+        "mov r0, #0x18\n"
+        "ldr r1, =0x20026\n"
+        "bkpt #0xAB\n"
+        : : : "r0", "r1", "memory"
+    );
+    while (1) {}
+}
+
+static void print_kv(const char *prefix, int32_t val) {
+    char buf[64];
+    int idx = 0;
+    while (prefix[idx] != '\0' && idx < 42) {
+        buf[idx] = prefix[idx];
+        idx++;
+    }
+    if (val < 0) {
+        buf[idx++] = '-';
+        val = -val;
+    }
+    char digits[16];
+    int d = 0;
+    if (val == 0) digits[d++] = '0';
+    while (val > 0 && d < 15) {
+        digits[d++] = (char)('0' + (val % 10));
+        val /= 10;
+    }
+    while (d > 0) buf[idx++] = digits[--d];
+    buf[idx++] = '\n';
+    buf[idx] = '\0';
+    semihost_write0(buf);
+}
+
+static uint32_t measure_stack_hwm(void) {
+    uint32_t sp_val = 0U;
+    __asm__ volatile ("mov %0, sp" : "=r"(sp_val));
+    uintptr_t top = 0x20400000U;
+    volatile const uint32_t *p = (volatile const uint32_t *)(top - 8192U);
+    volatile const uint32_t *end = (volatile const uint32_t *)top;
+    while (p < end && *p == 0xDEADBEEFU) {
+        p++;
+    }
+    uint32_t painted_used = (uint32_t)(top - (uintptr_t)p);
+    uint32_t cur_used = (sp_val < top) ? (uint32_t)(top - sp_val) : 0U;
+    return (painted_used > cur_used) ? painted_used : cur_used;
+}
+
+int main(void) {
+    BiquadFilterState filt;
+    RPeakDetectorState rdet;
+    FaultDetectorState fdet;
+
+    ECG_Filter_Init(&filt);
+    RPeak_Init(&rdet);
+    Fault_Init(&fdet);
+
+    uint32_t peaks[MAX_PEAKS];
+    uint32_t total_peaks = 0U;
+
+    uint32_t tp = 0U, fp = 0U, fn = 0U, tn = 0U;
+    uint32_t hold_engaged_windows = 0U;
+
+    float current_ecg_hr = 0.0f;
+    float last_valid_hr = 0.0f;
+
+    for (uint32_t w = 0U; w < (DATASET_SIZE / WIN_SAMPLES); w++) {
+        uint32_t w_start = w * WIN_SAMPLES;
+        uint32_t w_peaks[64];
+        uint32_t w_pcount = 0U;
+        uint32_t w_ecg_faults = 0U;
+
+        for (uint32_t i = 0U; i < WIN_SAMPLES; i++) {
+            uint32_t n = w_start + i;
+            float y = ECG_Filter_Process(&filt, ecg_data[n]);
+            if (RPeak_Process(&rdet, y, n)) {
+                if (total_peaks < MAX_PEAKS) peaks[total_peaks++] = n;
+                if (w_pcount < 64U) w_peaks[w_pcount++] = n;
+                if (total_peaks >= 3U) {
+                    uint32_t k = (total_peaks >= 9U) ? 9U : total_peaks;
+                    current_ecg_hr = HR_Estimate_RR_Filtered(&peaks[total_peaks - k], k, SAMPLE_RATE, current_ecg_hr);
+                }
+            }
+
+            FaultCode fc = Fault_Detect_Full(&fdet, dt_ms[n], ecg_data[n],
+                                             sensor_hr[n], spo2_data[n], current_ecg_hr);
+            uint8_t pred = (fc != FAULT_NONE) ? 1U : 0U;
+            uint8_t gt = fault_ground_truth[n];
+
+            if (fc == FAULT_MISSING_SAMPLE || fc == FAULT_COMM_BURST || fc == FAULT_OUT_OF_RANGE) {
+                w_ecg_faults++;
+            }
+            if (pred == 1U && gt == 1U) tp++;
+            else if (pred == 1U && gt == 0U) fp++;
+            else if (pred == 0U && gt == 1U) fn++;
+            else tn++;
+        }
+
+        float hr_raw = HR_Estimate_Raw(w_peaks, w_pcount, SAMPLE_RATE);
+        if (last_valid_hr == 0.0f && hr_raw > 0.0f) last_valid_hr = hr_raw;
+
+        float hr_rr  = HR_Estimate_RR_Filtered(w_peaks, w_pcount, SAMPLE_RATE, last_valid_hr);
+        float sqi = 0.0f;
+        float hr_mit = HR_Estimate_Mitigated(w_peaks, w_pcount, SAMPLE_RATE,
+                                             w_ecg_faults, WIN_SAMPLES, last_valid_hr, &sqi);
+
+        if (sqi < 50.0f) hold_engaged_windows++;
+        if (sqi >= 50.0f && hr_mit > 0.0f) last_valid_hr = hr_mit;
+
+        print_kv("HR_RAW x100 = ", (int32_t)(hr_raw * 100.0f + 0.5f));
+        print_kv("HR_RR  x100 = ", (int32_t)(hr_rr  * 100.0f + 0.5f));
+        print_kv("HR_MIT x100 = ", (int32_t)(hr_mit * 100.0f + 0.5f));
+        print_kv("SQI    x100 = ", (int32_t)(sqi    * 100.0f + 0.5f));
+    }
+
+    char pbuf[1600];
+    int p = 0;
+    const char *hdr = "PEAKS_CSV: ";
+    while (hdr[p] != '\0') { pbuf[p] = hdr[p]; p++; }
+    for (uint32_t i = 0U; i < total_peaks && p < 1580; i++) {
+        uint32_t v = peaks[i];
+        char dig[12];
+        int d = 0;
+        if (v == 0U) dig[d++] = '0';
+        while (v > 0U && d < 11) { dig[d++] = (char)('0' + (v % 10U)); v /= 10U; }
+        while (d > 0) pbuf[p++] = dig[--d];
+        if (i + 1U < total_peaks) pbuf[p++] = ',';
+    }
+    pbuf[p++] = '\n';
+    pbuf[p] = '\0';
+    semihost_write0(pbuf);
+
+    print_kv("Detected R-peaks: ", (int32_t)total_peaks);
+    print_kv("HoldWindows: ", (int32_t)hold_engaged_windows);
+    print_kv("TP: ", (int32_t)tp);
+    print_kv("FP: ", (int32_t)fp);
+    print_kv("FN: ", (int32_t)fn);
+    print_kv("TN: ", (int32_t)tn);
+    print_kv("StackHWM: ", (int32_t)measure_stack_hwm());
+
+    semihost_exit();
+    return 0;
+}
+=== Actual compiled function calls ===
+00000008 <ECG_Filter_Init>:
+00000018 <ECG_Filter_Process>:
+00000084 <Fault_Init>:
+00000094 <Fault_Detect_Full>:
+00000194 <sort_floats>:
+000001f0 <HR_Estimate_Raw>:
+     230:	f7ff ffb0 	bl	194 <sort_floats>
+00000298 <HR_Estimate_RR_Filtered>:
+     316:	f7ff ff3d 	bl	194 <sort_floats>
+     368:	f7ff ff14 	bl	194 <sort_floats>
+00000388 <HR_Estimate_Mitigated>:
+     480:	f7ff fe88 	bl	194 <sort_floats>
+     536:	f7ff fe2d 	bl	194 <sort_floats>
+00000570 <print_kv>:
+00000624 <main>:
+     632:	f7ff fce9 	bl	8 <ECG_Filter_Init>
+     63a:	f000 f9f1 	bl	a20 <RPeak_Init>
+     640:	f7ff fd20 	bl	84 <Fault_Init>
+     6c6:	f7ff fca7 	bl	18 <ECG_Filter_Process>
+     6ce:	f000 f9bb 	bl	a48 <RPeak_Process>
+     708:	f7ff fdc6 	bl	298 <HR_Estimate_RR_Filtered>
+     726:	f7ff fcb5 	bl	94 <Fault_Detect_Full>
+     750:	f7ff fd4e 	bl	1f0 <HR_Estimate_Raw>
+     780:	f7ff fd8a 	bl	298 <HR_Estimate_RR_Filtered>
+     7a4:	f7ff fdf0 	bl	388 <HR_Estimate_Mitigated>
+     7d8:	f7ff feca 	bl	570 <print_kv>
+     7ee:	f7ff febf 	bl	570 <print_kv>
+     804:	f7ff feb4 	bl	570 <print_kv>
+     81e:	f7ff fea7 	bl	570 <print_kv>
+     8d0:	f7ff fe4e 	bl	570 <print_kv>
+     8d8:	f7ff fe4a 	bl	570 <print_kv>
+     8e0:	f7ff fe46 	bl	570 <print_kv>
+     8e8:	f7ff fe42 	bl	570 <print_kv>
+     8f0:	f7ff fe3e 	bl	570 <print_kv>
+     8f8:	f7ff fe3a 	bl	570 <print_kv>
+     92c:	f7ff fe20 	bl	570 <print_kv>
+00000a20 <RPeak_Init>:
+00000a48 <RPeak_Process>:
+00000b40 <Reset_Handler>:
+00000b5e <paint_loop>:
+00000b68 <paint_done>:
+     b68:	f7ff fd5c 	bl	624 <main>
+00000b6c <loop_forever>:
+00000b7c <a1>:
+00000b88 <a2>:
+00000b94 <b0>:
+00000ba0 <b1>:
+00000bac <b2>:
+00000c54 <fault_ground_truth>:
+000023c4 <dt_ms>:
+00008184 <spo2_data>:
+0000df44 <sensor_hr>:
+00013d04 <ecg_data>:
+=== Stack frame sizes ===
+/root/Wearable_Health_Monitor/firmware/src/r_peak.c:7:6:RPeak_Init	0	static
+/root/Wearable_Health_Monitor/firmware/src/r_peak.c:16:9:RPeak_Process	0	static
+/root/Wearable_Health_Monitor/firmware/src/main.c:26:13:print_kv	96	static
+/root/Wearable_Health_Monitor/firmware/src/main.c:64:5:main	2800	static
+/root/Wearable_Health_Monitor/firmware/src/fault_detector.c:5:6:Fault_Init	0	static
+/root/Wearable_Health_Monitor/firmware/src/fault_detector.c:14:11:Fault_Detect_Full	0	static
+/root/Wearable_Health_Monitor/firmware/src/ecg_filter.c:10:6:ECG_Filter_Init	0	static
+/root/Wearable_Health_Monitor/firmware/src/ecg_filter.c:17:7:ECG_Filter_Process	12	static
+/root/Wearable_Health_Monitor/firmware/src/hr_estimator.c:3:13:sort_floats	8	static
+/root/Wearable_Health_Monitor/firmware/src/hr_estimator.c:15:7:HR_Estimate_Raw	264	static
+/root/Wearable_Health_Monitor/firmware/src/hr_estimator.c:27:7:HR_Estimate_RR_Filtered	272	static
+/root/Wearable_Health_Monitor/firmware/src/hr_estimator.c:46:7:HR_Estimate_Mitigated	288	static
+=== Stack painting implementation ===
+firmware/src/main.c:50:static uint32_t measure_stack_hwm(void) {
+firmware/src/main.c:56:    while (p < end && *p == 0xDEADBEEFU) {
+firmware/src/main.c:154:    print_kv("StackHWM: ", (int32_t)measure_stack_hwm());
+firmware/startup/startup.s:27:    /* Paint top 8 KB below _estack with 0xDEADBEEF for runtime stack high-water mark */
+firmware/startup/startup.s:30:    ldr r2, =0xDEADBEEF

@@ -1,0 +1,75 @@
+
+Checking mitdb/100...
+Signal match: True
+Annotation match: True
+Maximum difference: 0.0
+
+Checking mitdb/101...
+Signal match: True
+Annotation match: True
+Maximum difference: 0.0
+
+Checking mitdb/102...
+Signal match: True
+Annotation match: True
+Maximum difference: 0.0
+
+Checking mitdb/103...
+Signal match: True
+Annotation match: True
+Maximum difference: 0.0
+
+Checking mitdb/105...
+Signal match: True
+Annotation match: True
+Maximum difference: 0.0
+
+Checking mitdb/106...
+Signal match: True
+Annotation match: True
+Maximum difference: 0.0
+
+Checking mitdb/108...
+Signal match: True
+Annotation match: True
+Maximum difference: 0.0
+
+Checking mitdb/113...
+Signal match: True
+Annotation match: True
+Maximum difference: 0.0
+
+Checking mitdb/115...
+Signal match: True
+Annotation match: True
+Maximum difference: 0.0
+
+Checking mitdb/119...
+Signal match: True
+Annotation match: True
+Maximum difference: 0.0
+
+Checking mitdb/200...
+Signal match: True
+Annotation match: True
+Maximum difference: 0.0
+
+Checking nstdb/bw...
+Signal match: True
+Annotation match: None
+Maximum difference: 0.0
+
+Checking nstdb/ma...
+Signal match: True
+Annotation match: None
+Maximum difference: 0.0
+
+Checking nstdb/em...
+Signal match: True
+Annotation match: None
+Maximum difference: 0.0
+
+========== FINAL SUMMARY ==========
+Records verified: 14/14
+Report saved to: /mnt/c/Users/suvar/Downloads/physionet_input_verification.json
+PASS: All decoded experimental inputs match.

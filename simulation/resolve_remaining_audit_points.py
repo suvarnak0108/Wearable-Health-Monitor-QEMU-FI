@@ -1,9 +1,6 @@
-import csv
 import hashlib
 import json
-import re
 import subprocess
-import sys
 from pathlib import Path
 import numpy as np
 from scipy.signal import butter, resample, sosfilt
@@ -78,13 +75,14 @@ def make_1hz_aux(true_hr_100hz: np.ndarray, seed: int, lag_samples: int = 150, j
     n = len(true_hr_100hz)
     aux_hr = np.zeros(n, dtype=np.float64)
     spo2 = np.zeros(n, dtype=np.float64)
-    cur_hr = float(np.round(true_hr_100hz[0] + rng.normal(0.0, jitter_sd)))
+    cur_hr = float(np.round(true_hr_100hz[0] + (rng.normal(0.0, jitter_sd) if jitter_sd > 0 else 0.0)))
     cur_spo2 = 98.0
     for i in range(n):
         if i % 100 == 0:
             lag_i = max(0, i - lag_samples)
-            cur_hr = float(np.round(true_hr_100hz[lag_i] + rng.normal(0.0, jitter_sd)))
-            cur_spo2 = float(int(np.clip(np.round(98.0 + rng.normal(0.0, 0.4)), 96, 99)))
+            j = float(rng.normal(0.0, jitter_sd)) if jitter_sd > 0 else 0.0
+            cur_hr = float(np.round(true_hr_100hz[lag_i] + j))
+            cur_spo2 = float(int(np.clip(np.round(98.0 + (rng.normal(0.0, 0.4) if jitter_sd > 0 else 0.0)), 96, 99)))
         aux_hr[i] = cur_hr
         spo2[i] = cur_spo2
     return aux_hr, spo2
@@ -136,45 +134,35 @@ def rolling_9beat_hr(peaks: np.ndarray, n_len: int, fs: float = 100.0) -> np.nda
 
 
 def classify_faults_5stage(dt_ms, x, hr_s, spo2, hr_ecg_rolling):
-    """Codes: 0=NONE, 1=COMM_BURST, 2=MISSING_SAMPLE, 3=OUT_OF_RANGE, 4=STALE_DATA, 5=HR_INCONSISTENCY."""
     n_len = len(x)
     codes = np.zeros(n_len, dtype=np.int32)
-    k_trace = np.zeros(n_len, dtype=np.int32)
     k_ecg = 0
     x_prev = float(x[0]) if n_len > 0 else 0.0
-
     for n in range(n_len):
         dt = float(dt_ms[n])
         xn = float(x[n])
         hrs = float(hr_s[n])
         sp = float(spo2[n])
         hecg = float(hr_ecg_rolling[n])
-
         if dt >= 50.0:
             k_ecg = 0
-            k_trace[n] = k_ecg
             codes[n] = 1
             x_prev = xn
             continue
         if dt > 15.0:
             k_ecg = 0
-            k_trace[n] = k_ecg
             codes[n] = 2
             x_prev = xn
             continue
         if (hrs < 30.0 or hrs > 200.0) or (sp < 70.0 or sp > 100.0) or np.isnan(hrs) or np.isnan(xn):
-            k_trace[n] = k_ecg
             codes[n] = 3
             x_prev = xn
             continue
-
         if abs(xn - x_prev) < 1e-6:
             k_ecg = min(250, k_ecg + 1)
         else:
             k_ecg = 0
         x_prev = xn
-        k_trace[n] = k_ecg
-
         if k_ecg >= 150:
             codes[n] = 4
             continue
@@ -182,7 +170,7 @@ def classify_faults_5stage(dt_ms, x, hr_s, spo2, hr_ecg_rolling):
             codes[n] = 5
             continue
         codes[n] = 0
-    return codes, k_trace
+    return codes
 
 
 def windowed_10s_hr_rr_filtered(peaks: np.ndarray, n_len: int = 6000, win_size: int = 1000, fs: float = 100.0) -> np.ndarray:
@@ -199,25 +187,6 @@ def windowed_10s_hr_rr_filtered(peaks: np.ndarray, n_len: int = 6000, win_size: 
                 last_hr = (60.0 * fs) / float(np.median(valid))
         hr_w[w] = last_hr
     return hr_w
-
-
-def aami_beat_metrics(true_peaks: np.ndarray, det_peaks: np.ndarray, tol_samples: int = 15):
-    matched_t = set()
-    tp = 0
-    for d in det_peaks:
-        diffs = np.abs(true_peaks - d)
-        if len(diffs) == 0:
-            continue
-        idx = int(np.argmin(diffs))
-        if diffs[idx] <= tol_samples and idx not in matched_t:
-            matched_t.add(idx)
-            tp += 1
-    fp = int(len(det_peaks) - tp)
-    fn = int(len(true_peaks) - tp)
-    sens = (tp / len(true_peaks) * 100.0) if len(true_peaks) > 0 else 100.0
-    ppv = (tp / len(det_peaks) * 100.0) if len(det_peaks) > 0 else 100.0
-    f1 = (2.0 * sens * ppv / (sens + ppv)) if (sens + ppv) > 0 else 0.0
-    return {"tp": tp, "fp": fp, "fn": fn, "sens": sens, "ppv": ppv, "f1": f1}
 
 
 def build_clean_elf():
@@ -255,17 +224,12 @@ def build_clean_elf():
                 if len(tail) >= 2 and tail[1].isdigit():
                     su_map[tail[0]] = int(tail[1])
 
-    summary = {
-        "elf": str(elf_path.relative_to(ROOT)),
-        "sha256": sha256_file(elf_path),
-        "su_bytes": su_map,
-    }
+    summary = {"elf": str(elf_path.relative_to(ROOT)), "sha256": sha256_file(elf_path), "su_bytes": su_map}
     (OUT_DIR / "elf_build.json").write_text(json.dumps(summary, indent=2))
     return summary
 
 
-def run_unified_noise_and_refractory():
-    """Item 1, 4, 5: Single consistent run for sigma=0..0.35, 480ms vs 300ms, and sigma=0.08 non-transition analysis."""
+def run_unified_noise_and_zero_lag_check():
     step_vals = [70.0, 84.0, 75.0, 95.0, 80.0, 70.0]
     hr_step = np.repeat(step_vals, 1000)
     ecg_step, true_beats = hr_trajectory_to_beats(hr_step, fs=100.0)
@@ -273,44 +237,27 @@ def run_unified_noise_and_refractory():
     dt_ms = np.full(6000, 10, dtype=np.int32)
     gt = np.zeros(6000, dtype=bool)
 
-    # Identify step-transition samples (within 2.0s [200 samples] after each 10s boundary)
-    trans_mask = np.zeros(6000, dtype=bool)
-    for boundary in [1000, 2000, 3000, 4000, 5000]:
-        trans_mask[boundary : min(6000, boundary + 200)] = True
-
     sigmas = [0.0, 0.08, 0.15, 0.25, 0.35]
-    report = {"300ms_Rmin30": {}, "480ms_Rmin48": {}}
+    report = {"300ms_Rmin30": {}, "480ms_Rmin48": {}, "zero_lag_sigma_0.08": {}}
 
     for label, r_min in [("300ms_Rmin30", 30), ("480ms_Rmin48", 48)]:
         for sigma in sigmas:
             peaks_l, fpr_l, mae_l = [], [], []
-            nontrans_abs_diff = []
-            nontrans_gt12_frac = []
             for tr in range(20):
                 seed = 1000 + tr
                 rng = np.random.default_rng(seed)
                 ecg_n = ecg_step + (rng.normal(0.0, sigma, size=6000) if sigma > 0 else 0.0)
-                aux_hr, spo2 = make_1hz_aux(hr_step, seed=seed)
+                aux_hr, spo2 = make_1hz_aux(hr_step, seed=seed, lag_samples=150, jitter_sd=1.8)
                 y3 = biquad_bandpass_3stage(ecg_n, fs=100.0)
                 peaks = detect_rpeaks_adaptive(y3, r_min=r_min)
                 hr_roll = rolling_9beat_hr(peaks, 6000, fs=100.0)
-                codes, _ = classify_faults_5stage(dt_ms, ecg_n, aux_hr, spo2, hr_roll)
+                codes = classify_faults_5stage(dt_ms, ecg_n, aux_hr, spo2, hr_roll)
                 fp = int(np.sum((codes != 0) & (~gt)))
                 tn = int(np.sum((codes == 0) & (~gt)))
-                fpr = fp / (fp + tn) * 100.0
+                fpr_l.append(fp / (fp + tn) * 100.0)
                 h_rr = windowed_10s_hr_rr_filtered(peaks, 6000, 1000, 100.0)
-                mae = float(np.mean(np.abs(h_rr - w_true)))
-
+                mae_l.append(float(np.mean(np.abs(h_rr - w_true))))
                 peaks_l.append(len(peaks))
-                fpr_l.append(fpr)
-                mae_l.append(mae)
-
-                valid_nt = (~trans_mask) & (hr_roll > 0)
-                if np.any(valid_nt):
-                    diffs = np.abs(aux_hr[valid_nt] - hr_roll[valid_nt])
-                    nontrans_abs_diff.append(float(np.mean(diffs)))
-                    nontrans_gt12_frac.append(float(np.mean(diffs > 12.0) * 100.0))
-
             report[label][f"sigma_{sigma:.2f}"] = {
                 "peaks_mean": float(np.mean(peaks_l)),
                 "peaks_sd": float(np.std(peaks_l, ddof=1)),
@@ -318,16 +265,29 @@ def run_unified_noise_and_refractory():
                 "fpr_sd": float(np.std(fpr_l, ddof=1)),
                 "mae_mean": float(np.mean(mae_l)),
                 "mae_sd": float(np.std(mae_l, ddof=1)),
-                "nontrans_mean_abs_hr_diff_bpm": float(np.mean(nontrans_abs_diff)) if nontrans_abs_diff else None,
-                "nontrans_frac_gt12_pct": float(np.mean(nontrans_gt12_frac)) if nontrans_gt12_frac else None,
             }
+
+    # Zero-lag test at sigma=0.08
+    fpr_zl = []
+    for tr in range(20):
+        seed = 1000 + tr
+        rng = np.random.default_rng(seed)
+        ecg_n = ecg_step + rng.normal(0.0, 0.08, size=6000)
+        aux_hr, spo2 = make_1hz_aux(hr_step, seed=seed, lag_samples=0, jitter_sd=0.0)
+        y3 = biquad_bandpass_3stage(ecg_n, fs=100.0)
+        peaks = detect_rpeaks_adaptive(y3, r_min=30)
+        hr_roll = rolling_9beat_hr(peaks, 6000, fs=100.0)
+        codes = classify_faults_5stage(dt_ms, ecg_n, aux_hr, spo2, hr_roll)
+        fp = int(np.sum((codes != 0) & (~gt)))
+        tn = int(np.sum((codes == 0) & (~gt)))
+        fpr_zl.append(fp / (fp + tn) * 100.0)
+    report["zero_lag_sigma_0.08"] = {"fpr_mean": float(np.mean(fpr_zl)), "fpr_sd": float(np.std(fpr_zl, ddof=1))}
 
     (OUT_DIR / "unified_noise_and_refractory.json").write_text(json.dumps(report, indent=2))
     return report
 
 
 def run_randomized_stale_and_compound():
-    """Item 2: Randomized stale freeze placement + separate STALE_DATA recall vs overall recall."""
     step_vals = [70.0, 84.0, 75.0, 95.0, 80.0, 70.0]
     hr_step = np.repeat(step_vals, 1000)
     ecg_base, _ = hr_trajectory_to_beats(hr_step, fs=100.0)
@@ -336,9 +296,7 @@ def run_randomized_stale_and_compound():
     hr_roll = rolling_9beat_hr(peaks, 6000, fs=100.0)
     dt_base = np.full(6000, 10, dtype=np.int32)
 
-    # Pick non-transition candidate starts for 165-sample freeze
     valid_starts = [s for s in range(200, 5800 - 165) if not any(b <= s < b + 200 for b in [1000, 2000, 3000, 4000, 5000])]
-
     stale_only_rec, stale_only_overall_rec = [], []
     comp_stale_rec, comp_overall_rec, comp_f1 = [], [], []
 
@@ -348,18 +306,16 @@ def run_randomized_stale_and_compound():
         e_idx = s_idx + 165
         aux_hr, spo2 = make_1hz_aux(hr_step, seed=2000 + tr)
 
-        # F5-only randomized window
         ecg_f5 = ecg_base.copy()
         ecg_f5[s_idx:e_idx] = ecg_f5[s_idx - 1]
         gt_f5 = np.zeros(6000, dtype=bool)
         gt_f5[s_idx:e_idx] = True
-        c_f5, _ = classify_faults_5stage(dt_base, ecg_f5, aux_hr, spo2, hr_roll)
+        c_f5 = classify_faults_5stage(dt_base, ecg_f5, aux_hr, spo2, hr_roll)
         stale_only_rec.append(float(np.mean(c_f5[s_idx:e_idx] == 4) * 100.0))
         tp5 = int(np.sum((c_f5 != 0) & gt_f5))
         fn5 = int(np.sum((c_f5 == 0) & gt_f5))
         stale_only_overall_rec.append(tp5 / (tp5 + fn5) * 100.0)
 
-        # Burst (5x10) + randomized 165-sample Stale
         ecg_c = ecg_base.copy()
         dt_c = dt_base.copy()
         gt_c = np.zeros(6000, dtype=bool)
@@ -369,7 +325,7 @@ def run_randomized_stale_and_compound():
             gt_c[bs : bs + 10] = True
         ecg_c[s_idx:e_idx] = ecg_c[s_idx - 1]
         gt_c[s_idx:e_idx] = True
-        c_c, _ = classify_faults_5stage(dt_c, ecg_c, aux_hr, spo2, hr_roll)
+        c_c = classify_faults_5stage(dt_c, ecg_c, aux_hr, spo2, hr_roll)
         comp_stale_rec.append(float(np.mean(c_c[s_idx:e_idx] == 4) * 100.0))
         tpc = int(np.sum((c_c != 0) & gt_c))
         fpc = int(np.sum((c_c != 0) & (~gt_c)))
@@ -401,7 +357,6 @@ def run_randomized_stale_and_compound():
 
 
 def run_boundary_diagnostics():
-    """Item 3: Constant 80 BPM probe with mean, median, and effective threshold diagnostics."""
     hr_const = np.full(6000, 80.0, dtype=np.float64)
     ecg_const, _ = hr_trajectory_to_beats(hr_const, fs=100.0)
     y3 = biquad_bandpass_3stage(ecg_const, fs=100.0)
@@ -417,7 +372,7 @@ def run_boundary_diagnostics():
             aux_hr, spo2 = make_1hz_aux(hr_const, seed=800 + tr)
             aux_mod = aux_hr.copy()
             aux_mod[s0:s1] += off
-            codes, _ = classify_faults_5stage(dt_ms, ecg_const, aux_mod, spo2, hr_roll)
+            codes = classify_faults_5stage(dt_ms, ecg_const, aux_mod, spo2, hr_roll)
             fracs.append(float(np.mean(codes[s0:s1] == 5) * 100.0))
             diff = aux_mod[s0:s1] - hr_roll[s0:s1]
             means.append(float(np.mean(diff)))
@@ -432,83 +387,15 @@ def run_boundary_diagnostics():
     return res_table
 
 
-def run_480ms_clinical_and_beats():
-    """Item 4: 480 ms vs 300 ms on 10 MIT-BIH records (beat F1 + clinical triple-compound MAE)."""
-    try:
-        import wfdb
-    except ImportError:
-        return None
-
-    records = ["100", "101", "103", "105", "106", "108", "113", "115", "119", "200"]
-    beat_syms = {"N", "L", "R", "A", "V", "F", "e", "j", "E", "J"}
-    nstdb_em = resample(wfdb.rdsamp("em", pn_dir="nstdb", sampfrom=0, sampto=21600)[0][:, 0], 6000)
-    nstdb_em = (nstdb_em - np.mean(nstdb_em)) / np.std(nstdb_em)
-
-    out = {}
-    for label, r_min in [("480ms_Rmin48", 48), ("300ms_Rmin30", 30)]:
-        per_rec = []
-        f1s_clean, maes_triple = [], []
-        for idx_r, rec_id in enumerate(records):
-            rec = wfdb.rdrecord(rec_id, pn_dir="mitdb", sampfrom=0, sampto=21600)
-            ann = wfdb.rdann(rec_id, "atr", pn_dir="mitdb", sampfrom=0, sampto=21600)
-            sig = rec.p_signal[:, 0]
-            ecg = resample(sig, 6000)
-            med = np.median(ecg)
-            scale = np.percentile(np.abs(ecg - med), 99)
-            ecg_norm = (ecg - med) / (scale if scale > 1e-9 else 1.0)
-
-            true_peaks = np.array([int(round(s * 6000.0 / 21600.0)) for s, sym in zip(ann.sample, ann.symbol) if sym in beat_syms], dtype=np.int32)
-            det_clean = detect_rpeaks_adaptive(biquad_bandpass_3stage(ecg_norm, fs=100.0), r_min=r_min)
-            bm = aami_beat_metrics(true_peaks, det_clean, tol_samples=15)
-
-            # Triple compound clinical run
-            ecg_tr = ecg_norm + 0.15 * nstdb_em
-            aux_hr, spo2 = make_1hz_aux(np.full(6000, 75.0), seed=900 + idx_r)
-            dt_tr = np.full(6000, 10, dtype=np.int32)
-            for b in range(10):
-                s = 300 + b * 500
-                dt_tr[s : s + 10] = 60
-            aux_hr[2000:3500] += 22.0
-
-            det_tr = detect_rpeaks_adaptive(biquad_bandpass_3stage(ecg_tr, fs=100.0), r_min=r_min)
-            h_tr = windowed_10s_hr_rr_filtered(det_tr, 6000, 1000, 100.0)
-            h_ref = windowed_10s_hr_rr_filtered(true_peaks, 6000, 1000, 100.0)
-            mae_tr = float(np.mean(np.abs(h_tr - h_ref)))
-
-            f1s_clean.append(bm["f1"])
-            maes_triple.append(mae_tr)
-            per_rec.append({"record": rec_id, "clean_beat_f1": bm["f1"], "triple_rr_mae": mae_tr})
-
-        out[label] = {
-            "clean_beat_f1_mean": float(np.mean(f1s_clean)),
-            "clean_beat_f1_sd": float(np.std(f1s_clean, ddof=1)),
-            "triple_rr_mae_mean": float(np.mean(maes_triple)),
-            "triple_rr_mae_sd": float(np.std(maes_triple, ddof=1)),
-            "per_record": per_rec,
-        }
-
-    (OUT_DIR / "refractory_480ms_clinical_beats.json").write_text(json.dumps(out, indent=2))
-    return out
-
-
 def main():
     elf_info = build_clean_elf()
-    noise_rep = run_unified_noise_and_refractory()
+    noise_rep = run_unified_noise_and_zero_lag_check()
     stale_rep = run_randomized_stale_and_compound()
     bound_rep = run_boundary_diagnostics()
-    clin_rep = run_480ms_clinical_and_beats()
-
-    print("\n=== SUMMARY OF RESOLUTIONS ===")
-    print("ELF:", elf_info["elf"], elf_info["sha256"][:16], ".su:", elf_info["su_bytes"])
-    print("sigma=0.00 (300ms):", noise_rep["300ms_Rmin30"]["sigma_0.00"])
-    print("sigma=0.08 (300ms):", noise_rep["300ms_Rmin30"]["sigma_0.08"])
-    print("sigma=0.25 (300ms vs 480ms):", noise_rep["300ms_Rmin30"]["sigma_0.25"], "vs", noise_rep["480ms_Rmin48"]["sigma_0.25"])
+    print("ELF:", elf_info["elf"], elf_info["sha256"][:16])
+    print("Zero-lag sigma=0.08 FPR:", noise_rep["zero_lag_sigma_0.08"])
     print("Randomized stale & compound:", stale_rep)
-    print("Constant 80 BPM boundary:", bound_rep)
-    if clin_rep:
-        for k, v in clin_rep.items():
-            recs_str = ", ".join(f"{r['record']}: F1={r['clean_beat_f1']:.1f}%, MAE={r['triple_rr_mae']:.2f}" for r in v["per_record"] if r["record"] in {"108", "119", "200"})
-            print(f"{k}: mean F1={v['clean_beat_f1_mean']:.2f}%, mean triple MAE={v['triple_rr_mae_mean']:.3f} | {recs_str}")
+    print("Boundary:", bound_rep)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/root/Wearable_Health_Monitor/simulation/run_final_revision_audit.py", line 78, in <module>
+    if '--host-only' not in sys.argv: qemu_audit()
+                                      ^^^^^^^^^^^^
+  File "/root/Wearable_Health_Monitor/simulation/run_final_revision_audit.py", line 61, in qemu_audit
+    em=resample(cached('em','nstdb'),6000); em/=np.std(em)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/root/Wearable_Health_Monitor/simulation/run_final_revision_audit.py", line 60, in cached
+    raise FileNotFoundError(f'Original cache required: {f}')
+FileNotFoundError: Original cache required: /root/Wearable_Health_Monitor/data_cache/nstdb_em_dat.npz

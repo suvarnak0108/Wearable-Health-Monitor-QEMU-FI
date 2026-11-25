@@ -1,0 +1,92 @@
+{
+  "records": [
+    "109",
+    "111",
+    "112",
+    "114",
+    "116",
+    "117",
+    "118",
+    "121",
+    "122",
+    "123",
+    "124",
+    "201",
+    "202",
+    "203",
+    "205",
+    "207",
+    "208",
+    "209",
+    "210",
+    "212"
+  ],
+  "scenarios": [
+    [
+      "clean",
+      0,
+      false,
+      false
+    ],
+    [
+      "burst",
+      0,
+      true,
+      false
+    ],
+    [
+      "em_drift",
+      0.2,
+      false,
+      true
+    ],
+    [
+      "triple",
+      0.15,
+      true,
+      true
+    ]
+  ],
+  "source_hashes": {
+    "/root/Wearable_Health_Monitor/simulation/run_unified_master_pipeline.py": "39e5ec42c38db17a03e5f333f017ac90fe2b6da64cc5a4e1d10cca643223c965",
+    "/root/Wearable_Health_Monitor/extended_validation/scripts/run_extended_clinical.py": "18ee9edf7bcd5fc42dfcc5dbc824dea4946e53493892c26523876b1231eed332",
+    "/root/Wearable_Health_Monitor/data_cache/nstdb_em_dat.npz": "34d6511b59b4db4f5f9611af20f6a9587857a9c13599027663a6da48a0529c2f",
+    "/root/Wearable_Health_Monitor/firmware/backup_baseline/fault_detector.c": "995ab80045dfad972d4d1e5117c79ee322e22e5cb3cbac0fce94e1cb2cf38290",
+    "/root/Wearable_Health_Monitor/firmware/backup_baseline/fault_detector.h": "4eb7d5a6d94595d47a275ac0185efa2c076ea904c8d36eaf180a5079e648a2b6",
+    "/root/Wearable_Health_Monitor/firmware/backup_baseline/main.c": "4993505ee3b9816c8b0f5dfc018e4d43d6b7863591a23744aba32794585bd874",
+    "/root/Wearable_Health_Monitor/firmware/backup_baseline/r_peak.c": "2c3fc64d79efeb4bbf99a18c16b92dd069b253a3f07eeb5829c94893bf44cb99",
+    "/root/Wearable_Health_Monitor/firmware/backup_baseline/r_peak.h": "36bb95b657004bf116ebdeb6e31d2f52b9ab07c6fe4788c67daae84f4d4919f1",
+    "/root/Wearable_Health_Monitor/firmware/baseline.c": "1990dbb05bf163bc1468935eaeb68d9c5fea6167e20a4c7b615003c1c2b3469d",
+    "/root/Wearable_Health_Monitor/firmware/include/ecg_filter.h": "937f83a0ee754efdaf021a4b90913c05738384d71c27dbdca365c2f3547e0dbf",
+    "/root/Wearable_Health_Monitor/firmware/include/fault_detector.h": "33c30526fe11caad0139d0a73bcebad825eb7af4c3bdb55cf07990efc9cbe243",
+    "/root/Wearable_Health_Monitor/firmware/include/hr_estimator.h": "9308eb1ebcafa907bc7d887a7e9f60e467f337bd90b4ce106811bf096381919a",
+    "/root/Wearable_Health_Monitor/firmware/include/qemu_dataset.h": "35e8a707bb89b23aa9bedbb86f4e02220cb25dc6f4ed1d075946e5a9c2e679a5",
+    "/root/Wearable_Health_Monitor/firmware/include/qemu_dataset_independent.h": "2a2cd5f5173dcf72e9f82488f64640726240f6c08e00da001d22898c4315203b",
+    "/root/Wearable_Health_Monitor/firmware/include/r_peak.h": "7fc05db902ff224a02c9b8941ddcde5229d577bb4b37cda328cc72ed6f0040da",
+    "/root/Wearable_Health_Monitor/firmware/include/wearable_monitor.h": "a1ed5056b1befb5bdd5e3c4dac283d667fb7227fed1487e4507b1ddf8edb1bad",
+    "/root/Wearable_Health_Monitor/firmware/linker/mps2_an386.ld": "40edf6def30b553728af5b6b42fd78ec5c89761222b465cc40832740f5118f04",
+    "/root/Wearable_Health_Monitor/firmware/m4_flt_dump.c": "ed821544718045366c2397e94898d4f4f4812ae254f06b31350c50342b31d828",
+    "/root/Wearable_Health_Monitor/firmware/pt_m4_bench.c": "c3d1633432f2ce5783dcfd71e7d33a48c7615f4816cc1ed9ed163fc8c9c9906b",
+    "/root/Wearable_Health_Monitor/firmware/src/ecg_filter.c": "e8bc89ed41ab3ce5f103e03564d7d9532e5273991639b34efbfd9d422ede4067",
+    "/root/Wearable_Health_Monitor/firmware/src/fault_detector.c": "8dce07c644c45dd180eb292af850a99972d126819706ea0a307fe22318c2d8ee",
+    "/root/Wearable_Health_Monitor/firmware/src/hr_estimator.c": "feae7175a107130426a106cfb5b9227ef5144834d11f51e873e349f66a900f40",
+    "/root/Wearable_Health_Monitor/firmware/src/main.c": "5657218698d7d0351ed02e8f16c2f9da9fa9584eef903301601fc9e6fbd622fb",
+    "/root/Wearable_Health_Monitor/firmware/src/qemu_test.c": "e613971148f7e7ce7a991d743a94ccf349208d2b5c3f0db28fda6a47d1ed8818",
+    "/root/Wearable_Health_Monitor/firmware/src/r_peak.c": "9b8a42ed8d83ddef5463287cabb46ef73bd01f231a7b041b02ccb3037123210b",
+    "/root/Wearable_Health_Monitor/firmware/startup/startup.s": "ac6add23af6efb92925a9cb4435411034f830995a022e227bcc832a3436458db",
+    "/root/Wearable_Health_Monitor/firmware/tests/test_ecg_pipeline.c": "47d3b0268b941c6a1356488ccb4cff5b8a900a3bf9bcf0f54d7f9b5ccd000fcc",
+    "/root/Wearable_Health_Monitor/firmware/tests/test_fault_detector.c": "2851f2c18ff3832eb494111f035805b1b0a9c4089bce9a60ed021642589df09c",
+    "/root/Wearable_Health_Monitor/firmware/tests/test_filter.c": "b8e3263bc1e3a07bb3da5853ae15b3e2a30fcb119394b92226d01f891b204485",
+    "/root/Wearable_Health_Monitor/firmware/tests/test_hr_pipeline.c": "3e737bf999454a8137bf987867e332f8527f8f67c28eea13f4c5263c231fefcc",
+    "/root/Wearable_Health_Monitor/firmware/tests/test_integrated_pipeline.c": "32b29f2f54b87a747a950f17f5ab85acaa964385991ddca84fe8a845d31f8986",
+    "/root/Wearable_Health_Monitor/firmware/x86_flt_dump.c": "86f9568bfc023dceb850ac17950ff8a80809f8dae344e24b08c688b46ccbcfd3",
+    "/root/Wearable_Health_Monitor/firmware/x86_fpu_check.c": "4d17612d969614ddb367e6240241fb998b2bb2a66299b02e89e121d9fabe7b57"
+  },
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "wfdb": "4.3.1",
+  "tools": {
+    "arm-none-eabi-gcc": "arm-none-eabi-gcc (15:13.2.rel1-2) 13.2.1 20231009",
+    "qemu-system-arm": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)"
+  }
+}

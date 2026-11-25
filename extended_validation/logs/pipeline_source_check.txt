@@ -1,0 +1,353 @@
+========== PIPELINE FUNCTIONS ==========
+
+def load_wfdb_cached(rec_name, pn_dir, sampto=21600, ann=False):
+    ext = "atr" if ann else "dat"
+    cfile = CACHE_DIR / f"{pn_dir}_{rec_name}_{ext}.npz"
+    if cfile.exists():
+        d = np.load(cfile, allow_pickle=True)
+        return (d["sample"], d["symbol"]) if ann else d["sig"]
+    # Check if raw WFDB files already exist anywhere in project
+    for local_hea in ROOT.rglob(f"{rec_name}.hea"):
+        rec_base = str(local_hea.with_suffix(""))
+        if ann:
+            a = wfdb.rdann(rec_base, "atr", sampto=sampto)
+            np.savez(cfile, sample=a.sample, symbol=np.array(a.symbol))
+            return a.sample, np.array(a.symbol)
+        else:
+            r = wfdb.rdrecord(rec_base, sampto=sampto)
+            np.savez(cfile, sig=r.p_signal[:, 0])
+            return r.p_signal[:, 0]
+    ver_dir = f"{pn_dir}/1.0.0"
+    for attempt in range(6):
+        try:
+            if ann:
+                a = wfdb.rdann(rec_name, "atr", pn_dir=ver_dir, sampto=sampto)
+                np.savez(cfile, sample=a.sample, symbol=np.array(a.symbol))
+                return a.sample, np.array(a.symbol)
+            else:
+                r = wfdb.rdrecord(rec_name, pn_dir=ver_dir, sampto=sampto)
+                np.savez(cfile, sig=r.p_signal[:, 0])
+                return r.p_signal[:, 0]
+        except Exception as e:
+            print(f"PhysioNet retry {attempt+1}/6 for {ver_dir}/{rec_name}: {e}")
+            time.sleep(3.0 * (attempt + 1))
+    raise RuntimeError(f"Failed to fetch {ver_dir}/{rec_name}")
+
+def compile_arm():
+    subprocess.run([
+        "arm-none-eabi-gcc", "-mcpu=cortex-m4", "-mthumb",
+        "-mfpu=fpv4-sp-d16", "-mfloat-abi=hard", "-ffp-contract=off",
+        "-ffreestanding", "-nostdlib", "-O2", "-fstack-usage",
+        "-I", "firmware/include",
+        "-Wl,-T,firmware/linker/mps2_an386.ld",
+        "firmware/startup/startup.s", *C_SRCS, "-lgcc", "-o", str(ELF)
+    ], check=True, capture_output=True)
+
+def write_header(ecg, hr, spo2, dt_ms, labels):
+    with open(HEADER, "w") as f:
+        f.write("#ifndef QEMU_DATASET_INDEPENDENT_H\n#define QEMU_DATASET_INDEPENDENT_H\n")
+        f.write("#include <stdint.h>\n#define DATASET_SIZE 6000\n#define SAMPLE_RATE 100.0f\n\n")
+        for name, ctype, vals, fmt in [
+            ("ecg_data", "float", ecg, lambda x: f"{x:.8f}f"),
+            ("sensor_hr", "float", hr, lambda x: f"{x:.2f}f"),
+            ("spo2_data", "float", spo2, lambda x: f"{x:.2f}f"),
+            ("dt_ms", "uint32_t", dt_ms, lambda x: str(int(x))),
+            ("fault_ground_truth", "uint8_t", labels, lambda x: str(int(x))),
+        ]:
+            f.write(f"static const {ctype} {name}[DATASET_SIZE] = {{\n")
+            for i in range(0, len(vals), 10):
+                f.write("    " + ", ".join(fmt(x) for x in vals[i:i+10]) + ",\n")
+            f.write("};\n\n")
+        f.write("#endif\n")
+
+def run_qemu(ecg, hr, spo2, dt_ms, labels, elf_path=ELF):
+    write_header(ecg, hr, spo2, dt_ms, labels)
+    if elf_path == ELF:
+        compile_arm()
+    cmd = ["qemu-system-arm", "-M", "mps2-an386", "-cpu", "cortex-m4",
+           "-kernel", str(elf_path), "-nographic", "-semihosting-config", "enable=on,target=native"]
+    res = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
+    out = res.stdout + res.stderr
+    def grab(pat):
+        m = re.search(pat, out)
+        return int(m.group(1)) if m else 0
+    hr_raw = np.array([int(m)/100.0 for m in re.findall(r"HR_RAW x100 = (\d+)", out)])
+    hr_rr  = np.array([int(m)/100.0 for m in re.findall(r"HR_RR  x100 = (\d+)", out)])
+    hr_mit = np.array([int(m)/100.0 for m in re.findall(r"HR_MIT x100 = (\d+)", out)])
+    sqi    = np.array([int(m)/100.0 for m in re.findall(r"SQI    x100 = (\d+)", out)])
+    m_csv = re.search(r"PEAKS_CSV:\s*([0-9,]+)", out)
+    peak_idx = np.array([int(x) for x in m_csv.group(1).split(",") if x]) if m_csv else np.array([], dtype=int)
+    rpeaks = grab(r"Detected R-peaks:\s*(\d+)")
+    holds  = grab(r"HoldWindows:\s*(\d+)")
+    tp, fp, fn, tn = grab(r"TP:\s*(\d+)"), grab(r"FP:\s*(\d+)"), grab(r"FN:\s*(\d+)"), grab(r"TN:\s*(\d+)")
+    hwm = grab(r"StackHWM:\s*(\d+)")
+    return rpeaks, peak_idx, holds, tp, fp, fn, tn, hwm, hr_raw, hr_rr, hr_mit, sqi
+
+def make_realistic_aux(true_hr_100hz, seed=0):
+    rng = np.random.default_rng(seed)
+    aux_hr = np.zeros(6000)
+    spo2 = np.zeros(6000)
+    cur_hr = float(np.round(true_hr_100hz[0] + rng.normal(0, 1.5)))
+    cur_spo2 = 98.0
+    for n in range(6000):
+        if n % 100 == 0:
+            lag_idx = max(0, n - 150)
+            cur_hr = float(np.round(true_hr_100hz[lag_idx] + rng.normal(0, 1.8)))
+            cur_spo2 = float(int(np.clip(np.round(98.0 + rng.normal(0, 0.4)), 96, 99)))
+        aux_hr[n] = cur_hr
+        spo2[n] = cur_spo2
+    return aux_hr, spo2
+
+def aami_score(true_r, det_r, tol=15):
+    matched_t = set(); tp = 0
+    for d in det_r:
+        diffs = np.abs(true_r - d)
+        if len(diffs) > 0:
+            j = int(np.argmin(diffs))
+            if diffs[j] <= tol and j not in matched_t:
+                matched_t.add(j); tp += 1
+    se = tp / len(true_r) * 100.0 if len(true_r) else 0.0
+    ppv = tp / len(det_r) * 100.0 if len(det_r) else 0.0
+    f1 = 2*se*ppv/(se+ppv) if (se+ppv) else 0.0
+    return se, ppv, f1
+
+========== REFRACTORY CONFIGURATION ==========
+#include "wearable_monitor.h"
+
+/* 300 ms refractory period @ 100 Hz -> supports up to 200 BPM */
+#define REFRACTORY_SAMPLES 30U
+#define MIN_ENERGY_FLOOR   0.012f
+
+void RPeak_Init(RPeakDetectorState *st) {
+    st->spki = 0.20f;
+    st->npki = 0.01f;
+    st->threshold = 0.086f;
+    st->last_peak_idx = 0U;
+    st->prev_e1 = 0.0f;
+    st->prev_e2 = 0.0f;
+}
+
+uint8_t RPeak_Process(RPeakDetectorState *st, float y_filt, uint32_t idx) {
+    /* Full-wave quadratic energy captures both upright and inverted PVCs */
+    float e = y_filt * y_filt;
+    uint8_t detected = 0U;
+
+    if (idx >= 2U && e < st->prev_e1 && st->prev_e1 >= st->prev_e2) {
+        uint32_t cand = idx - 1U;
+        float e_peak = st->prev_e1;
+        uint32_t dt = cand - st->last_peak_idx;
+
+        if ((st->last_peak_idx == 0U || dt >= REFRACTORY_SAMPLES) && e_peak > st->threshold) {
+            st->spki = 0.125f * e_peak + 0.875f * st->spki;
+            float th = st->npki + 0.40f * (st->spki - st->npki);
+            st->threshold = (th < MIN_ENERGY_FLOOR) ? MIN_ENERGY_FLOOR : th;
+            st->last_peak_idx = cand;
+            detected = 1U;
+        } else if (e_peak > 0.0005f) {
+            st->npki = 0.125f * e_peak + 0.875f * st->npki;
+            float th = st->npki + 0.40f * (st->spki - st->npki);
+            st->threshold = (th < MIN_ENERGY_FLOOR) ? MIN_ENERGY_FLOOR : th;
+        }
+    }
+
+    st->prev_e2 = st->prev_e1;
+    st->prev_e1 = e;
+    return detected;
+}
+
+
+========== MAIN FIRMWARE ==========
+#include "wearable_monitor.h"
+#include "qemu_dataset_independent.h"
+
+#define MAX_PEAKS 250U
+#define WIN_SAMPLES 1000U
+
+static void semihost_write0(const char *s) {
+    __asm__ volatile (
+        "mov r0, #0x04\n"
+        "mov r1, %0\n"
+        "bkpt #0xAB\n"
+        : : "r"(s) : "r0", "r1", "memory"
+    );
+}
+
+static void semihost_exit(void) {
+    __asm__ volatile (
+        "mov r0, #0x18\n"
+        "ldr r1, =0x20026\n"
+        "bkpt #0xAB\n"
+        : : : "r0", "r1", "memory"
+    );
+    while (1) {}
+}
+
+static void print_kv(const char *prefix, int32_t val) {
+    char buf[64];
+    int idx = 0;
+    while (prefix[idx] != '\0' && idx < 42) {
+        buf[idx] = prefix[idx];
+        idx++;
+    }
+    if (val < 0) {
+        buf[idx++] = '-';
+        val = -val;
+    }
+    char digits[16];
+    int d = 0;
+    if (val == 0) digits[d++] = '0';
+    while (val > 0 && d < 15) {
+        digits[d++] = (char)('0' + (val % 10));
+        val /= 10;
+    }
+    while (d > 0) buf[idx++] = digits[--d];
+    buf[idx++] = '\n';
+    buf[idx] = '\0';
+    semihost_write0(buf);
+}
+
+static uint32_t measure_stack_hwm(void) {
+    uint32_t sp_val = 0U;
+    __asm__ volatile ("mov %0, sp" : "=r"(sp_val));
+    uintptr_t top = 0x20400000U;
+    volatile const uint32_t *p = (volatile const uint32_t *)(top - 8192U);
+    volatile const uint32_t *end = (volatile const uint32_t *)top;
+    while (p < end && *p == 0xDEADBEEFU) {
+        p++;
+    }
+    uint32_t painted_used = (uint32_t)(top - (uintptr_t)p);
+    uint32_t cur_used = (sp_val < top) ? (uint32_t)(top - sp_val) : 0U;
+    return (painted_used > cur_used) ? painted_used : cur_used;
+}
+
+int main(void) {
+    BiquadFilterState filt;
+    RPeakDetectorState rdet;
+    FaultDetectorState fdet;
+
+    ECG_Filter_Init(&filt);
+    RPeak_Init(&rdet);
+    Fault_Init(&fdet);
+
+    uint32_t peaks[MAX_PEAKS];
+    uint32_t total_peaks = 0U;
+
+    uint32_t tp = 0U, fp = 0U, fn = 0U, tn = 0U;
+    uint32_t hold_engaged_windows = 0U;
+
+    float current_ecg_hr = 0.0f;
+    float last_valid_hr = 0.0f;
+
+    for (uint32_t w = 0U; w < (DATASET_SIZE / WIN_SAMPLES); w++) {
+        uint32_t w_start = w * WIN_SAMPLES;
+        uint32_t w_peaks[64];
+        uint32_t w_pcount = 0U;
+        uint32_t w_ecg_faults = 0U;
+
+        for (uint32_t i = 0U; i < WIN_SAMPLES; i++) {
+            uint32_t n = w_start + i;
+            float y = ECG_Filter_Process(&filt, ecg_data[n]);
+            if (RPeak_Process(&rdet, y, n)) {
+                if (total_peaks < MAX_PEAKS) peaks[total_peaks++] = n;
+                if (w_pcount < 64U) w_peaks[w_pcount++] = n;
+                if (total_peaks >= 3U) {
+                    uint32_t k = (total_peaks >= 9U) ? 9U : total_peaks;
+                    current_ecg_hr = HR_Estimate_RR_Filtered(&peaks[total_peaks - k], k, SAMPLE_RATE, current_ecg_hr);
+                }
+            }
+
+            FaultCode fc = Fault_Detect_Full(&fdet, dt_ms[n], ecg_data[n],
+                                             sensor_hr[n], spo2_data[n], current_ecg_hr);
+            uint8_t pred = (fc != FAULT_NONE) ? 1U : 0U;
+            uint8_t gt = fault_ground_truth[n];
+
+            if (fc == FAULT_MISSING_SAMPLE || fc == FAULT_COMM_BURST || fc == FAULT_OUT_OF_RANGE) {
+                w_ecg_faults++;
+            }
+            if (pred == 1U && gt == 1U) tp++;
+            else if (pred == 1U && gt == 0U) fp++;
+            else if (pred == 0U && gt == 1U) fn++;
+            else tn++;
+        }
+
+        float hr_raw = HR_Estimate_Raw(w_peaks, w_pcount, SAMPLE_RATE);
+        if (last_valid_hr == 0.0f && hr_raw > 0.0f) last_valid_hr = hr_raw;
+
+        float hr_rr  = HR_Estimate_RR_Filtered(w_peaks, w_pcount, SAMPLE_RATE, last_valid_hr);
+        float sqi = 0.0f;
+        float hr_mit = HR_Estimate_Mitigated(w_peaks, w_pcount, SAMPLE_RATE,
+                                             w_ecg_faults, WIN_SAMPLES, last_valid_hr, &sqi);
+
+        if (sqi < 50.0f) hold_engaged_windows++;
+        if (sqi >= 50.0f && hr_mit > 0.0f) last_valid_hr = hr_mit;
+
+        print_kv("HR_RAW x100 = ", (int32_t)(hr_raw * 100.0f + 0.5f));
+        print_kv("HR_RR  x100 = ", (int32_t)(hr_rr  * 100.0f + 0.5f));
+        print_kv("HR_MIT x100 = ", (int32_t)(hr_mit * 100.0f + 0.5f));
+        print_kv("SQI    x100 = ", (int32_t)(sqi    * 100.0f + 0.5f));
+    }
+
+    char pbuf[1600];
+    int p = 0;
+    const char *hdr = "PEAKS_CSV: ";
+    while (hdr[p] != '\0') { pbuf[p] = hdr[p]; p++; }
+    for (uint32_t i = 0U; i < total_peaks && p < 1580; i++) {
+        uint32_t v = peaks[i];
+        char dig[12];
+        int d = 0;
+        if (v == 0U) dig[d++] = '0';
+        while (v > 0U && d < 11) { dig[d++] = (char)('0' + (v % 10U)); v /= 10U; }
+        while (d > 0) pbuf[p++] = dig[--d];
+        if (i + 1U < total_peaks) pbuf[p++] = ',';
+    }
+    pbuf[p++] = '\n';
+    pbuf[p] = '\0';
+    semihost_write0(pbuf);
+
+    print_kv("Detected R-peaks: ", (int32_t)total_peaks);
+    print_kv("HoldWindows: ", (int32_t)hold_engaged_windows);
+    print_kv("TP: ", (int32_t)tp);
+    print_kv("FP: ", (int32_t)fp);
+    print_kv("FN: ", (int32_t)fn);
+    print_kv("TN: ", (int32_t)tn);
+    print_kv("StackHWM: ", (int32_t)measure_stack_hwm());
+
+    semihost_exit();
+    return 0;
+}
+
+
+========== PREVIOUS RECORD USAGE ==========
+simulation/run_complete_verification_suite.py:631:     nstdb_em_raw = wfdb.rdsamp("em", pn_dir="nstdb", sampfrom=0, sampto=21600)[0][:, 0]
+simulation/run_complete_verification_suite.py:647:             sig = wfdb.rdsamp(rec_id, pn_dir="mitdb", sampfrom=0, sampto=21600)[0][:, 0]
+simulation/run_expanded_clinical_recovery.py:70:     rec = wfdb.rdrecord(rec_id, pn_dir="mitdb", sampto=21600)
+simulation/run_expanded_clinical_recovery.py:71:     ann = wfdb.rdann(rec_id, "atr", pn_dir="mitdb", sampto=21600)
+simulation/run_final_audit_fixes.py:152:     sig_raw = load_cached(rec_id, "mitdb")
+simulation/run_final_audit_fixes.py:153:     ann_s, ann_sym = load_cached(rec_id, "mitdb", ann=True)
+simulation/run_final_audit_fixes.py:215:         sig_raw = load_cached(rec_id, "mitdb")
+simulation/run_final_audit_fixes.py:216:         ann_s, ann_sym = load_cached(rec_id, "mitdb", ann=True)
+simulation/run_final_revision_audit.py:69:                     x=resample(cached(rec,'mitdb'),6000); x=(x-np.median(x))/np.percentile(abs(x-np.median(x)),99); s,b=cached(rec,'mitdb',True); pk=np.array([round(int(j)*100/360) for j,k in zip(s,b) if k in syms]); pk=pk[(pk>0)&(pk<6000)]
+simulation/run_mitbih_clinical_qemu.py:66:     rec = wfdb.rdrecord(rec_id, pn_dir="mitdb", sampto=21600)  # 60s at 360 Hz
+simulation/run_mitbih_clinical_qemu.py:67:     ann = wfdb.rdann(rec_id, "atr", pn_dir="mitdb", sampto=21600)
+simulation/run_mitbih_clinical_qemu.py:109:         "MITBIH_Record": rec_id,
+simulation/run_mitbih_clinical_qemu.py:120: clin_df.to_csv(ROOT / "results/qemu_mitbih_clinical_validation.csv", index=False)
+simulation/run_pt_style_pipeline_audit.py:70:                     x=resample(cached(rec,'mitdb'),6000); x=(x-np.median(x))/np.percentile(abs(x-np.median(x)),99); s,b=cached(rec,'mitdb',True); pk=np.array([round(int(j)*100/360) for j,k in zip(s,b) if k in syms]); pk=pk[(pk>0)&(pk<6000)]
+simulation/run_q1_grade_validation.py:105: nstdb_em = resample(wfdb.rdrecord("em", pn_dir="nstdb", sampto=21600).p_signal[:, 0], 6000)
+simulation/run_q1_grade_validation.py:106: nstdb_ma = resample(wfdb.rdrecord("ma", pn_dir="nstdb", sampto=21600).p_signal[:, 0], 6000)
+simulation/run_q1_grade_validation.py:107: nstdb_bw = resample(wfdb.rdrecord("bw", pn_dir="nstdb", sampto=21600).p_signal[:, 0], 6000)
+simulation/run_q1_grade_validation.py:181:     rec = wfdb.rdrecord(rec_id, pn_dir="mitdb", sampto=21600)
+simulation/run_q1_grade_validation.py:182:     ann = wfdb.rdann(rec_id, "atr", pn_dir="mitdb", sampto=21600)
+simulation/run_refractory_firmware_audit.py:90:                     x=resample(cached(rec,'mitdb'),6000); x=(x-np.median(x))/np.percentile(abs(x-np.median(x)),99); s,b=cached(rec,'mitdb',True); pk=np.array([round(int(j)*100/360) for j,k in zip(s,b) if k in syms]); pk=pk[(pk>0)&(pk<6000)]
+simulation/run_remaining_fixes.py:110:     sig_raw = load_cached(rec_id, "mitdb")
+simulation/run_remaining_fixes.py:111:     ann_s, ann_sym = load_cached(rec_id, "mitdb", ann=True)
+simulation/run_reviewer_revisions.py:218:         rec = wfdb.rdrecord(rec_id, pn_dir="mitdb", sampto=21600)
+simulation/run_reviewer_revisions.py:219:         ann = wfdb.rdann(rec_id, "atr", pn_dir="mitdb", sampto=21600)
+simulation/run_unified_master_pipeline.py:25:             a = wfdb.rdann(rec_base, "atr", sampto=sampto)
+simulation/run_unified_master_pipeline.py:29:             r = wfdb.rdrecord(rec_base, sampto=sampto)
+simulation/run_unified_master_pipeline.py:36:                 a = wfdb.rdann(rec_name, "atr", pn_dir=ver_dir, sampto=sampto)
+simulation/run_unified_master_pipeline.py:40:                 r = wfdb.rdrecord(rec_name, pn_dir=ver_dir, sampto=sampto)
+simulation/run_unified_master_pipeline.py:168: ecg102 = resample(load_wfdb_cached("102", "mitdb", 21600), 6000)
+simulation/run_unified_master_pipeline.py:294:         sig_raw = load_wfdb_cached(rec_id, "mitdb", 21600)
+simulation/run_unified_master_pipeline.py:295:         ann_samp, ann_sym = load_wfdb_cached(rec_id, "mitdb", 21600, ann=True)
+simulation/run_unified_master_pipeline.py:411:         sig_raw = load_wfdb_cached(rec_id, "mitdb", 21600)
+simulation/run_unified_master_pipeline.py:412:         ann_samp, ann_sym = load_wfdb_cached(rec_id, "mitdb", 21600, ann=True)

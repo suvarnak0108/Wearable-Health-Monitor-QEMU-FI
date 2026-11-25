@@ -1,0 +1,883 @@
+========== PROJECT LOCATION ==========
+/root/Wearable_Health_Monitor
+========== GIT STATUS ==========
+ M results/audit_v4/unified_noise_and_refractory.json
+ M results/fig1_architecture.png
+ M results/fig2_waveform_comparison.png
+ M results/fig3_fixed_vs_adaptive.png
+ M simulation/resolve_remaining_audit_points.py
+?? data_cache/
+?? main.fdb_latexmk
+?? results/audit_v5/
+?? results/audit_v6/
+?? results/final_paper_figures/
+?? results/final_revision/
+?? simulation/regenerate_all_cleanfigs.py
+?? simulation/regenerate_figures.py
+?? simulation/regenerate_final_paper_figures.py
+?? simulation/results/
+?? simulation/run_final_primary_benchmark.py
+?? simulation/run_final_revision_audit.py
+?? simulation/run_final_revision_audit.py.bak
+?? simulation/run_pt_style_pipeline_audit.py
+?? simulation/run_refractory_firmware_audit.py
+?? texput.fls
+========== GIT HISTORY ==========
+1d0206a Record audit_v4 verification results across noise, stale windows, boundary probe, and 480ms runs
+f396a39 Add complete QEMU verification suite, audit logs, and pinned README
+ad6d90c Update README.md
+b6eb63d Update README.md
+3246f5e Update README.md
+========== PROJECT DIRECTORIES ==========
+.
+./analysis
+./data_cache
+./data_cache/mitdb
+./data_cache/nstdb
+./datasets
+./firmware
+./firmware/backup_baseline
+./firmware/include
+./firmware/linker
+./firmware/src
+./firmware/startup
+./firmware/tests
+./results
+./results/audit_v3
+./results/audit_v4
+./results/audit_v5
+./results/audit_v6
+./results/final_paper_figures
+./results/final_revision
+./simulation
+./simulation/__pycache__
+./simulation/results
+========== PROJECT FILES ==========
+./.gitignore
+./README.md
+./analysis/generate_fig1.py
+./analysis/generate_fig5.py
+./analysis/generate_fig6_fig7.py
+./analysis/generate_fig6_fig9.py
+./analysis/generate_fig8.py
+./analysis/generate_fig9.py
+./analysis/generate_paper_figures.py
+./analysis/plot_data.py
+./data_cache/mitdb_100_atr.npz
+./data_cache/mitdb_100_dat.npz
+./data_cache/mitdb_101_atr.npz
+./data_cache/mitdb_101_dat.npz
+./data_cache/mitdb_102_atr.npz
+./data_cache/mitdb_102_dat.npz
+./data_cache/mitdb_103_atr.npz
+./data_cache/mitdb_103_dat.npz
+./data_cache/mitdb_105_atr.npz
+./data_cache/mitdb_105_dat.npz
+./data_cache/mitdb_106_atr.npz
+./data_cache/mitdb_106_dat.npz
+./data_cache/mitdb_108_atr.npz
+./data_cache/mitdb_108_dat.npz
+./data_cache/mitdb_113_atr.npz
+./data_cache/mitdb_113_dat.npz
+./data_cache/mitdb_115_atr.npz
+./data_cache/mitdb_115_dat.npz
+./data_cache/mitdb_119_atr.npz
+./data_cache/mitdb_119_dat.npz
+./data_cache/mitdb_200_atr.npz
+./data_cache/mitdb_200_dat.npz
+./data_cache/nstdb_bw_dat.npz
+./data_cache/nstdb_em_dat.npz
+./data_cache/nstdb_ma_dat.npz
+./datasets/communication_data.csv
+./datasets/communication_ground_truth.csv
+./datasets/corrupted_data.csv
+./datasets/corruption_ground_truth.csv
+./datasets/high_noise_trial.csv
+./datasets/independent_validation_data.csv
+./datasets/missing_data.csv
+./datasets/missing_ground_truth.csv
+./datasets/noise_robustness_data.csv
+./datasets/noise_robustness_ground_truth.csv
+./datasets/normal_data.csv
+./datasets/stale_data.csv
+./datasets/stale_ground_truth.csv
+./datasets/subtle_corrupted_data.csv
+./datasets/subtle_ground_truth.csv
+./datasets/variable_hr_fault_data.csv
+./datasets/variable_hr_ground_truth.csv
+./datasets/variable_noisy_ecg.csv
+./firmware/audit_verified_m4.elf
+./firmware/baseline
+./firmware/baseline.c
+./firmware/firmware_m4.elf
+./firmware/independent_trial.map
+./firmware/m4_flt_dump.c
+./firmware/native_x86_check
+./firmware/native_x86_fast
+./firmware/pt_m4_bench.c
+./firmware/qemu_test.map
+./firmware/wearable_qemu.map
+./firmware/x86_flt_dump.c
+./firmware/x86_fpu_check.c
+./main.aux
+./main.fdb_latexmk
+./results/actual_missing_indices.csv
+./results/communication_metrics.csv
+./results/corruption_metrics.csv
+./results/detected_corruption.csv
+./results/detected_missing_indices.csv
+./results/ecg_hr_estimation.csv
+./results/fig1_architecture.png
+./results/fig2_waveform_comparison.png
+./results/fig3_fixed_vs_adaptive.png
+./results/fig4_multifault_performance.png
+./results/fig5_compound_and_footprint.png
+./results/fig6_hr_error_and_density.png
+./results/fig7_frontend_and_drift.png
+./results/fig8_clinical_mitbih.png
+./results/fig9_clinical_recovery.png
+./results/high_noise_waveform.png
+./results/hr_estimation_comparison.png
+./results/independent_validation_summary.csv
+./results/independent_validation_trials.csv
+./results/noise_robustness_summary.csv
+./results/noise_robustness_trials.csv
+./results/normal_data.png
+./results/qemu_40_clinical_trials.csv
+./results/qemu_adaptive_80_trials.csv
+./results/qemu_adaptive_summary.csv
+./results/qemu_all_faults_summary.csv
+./results/qemu_clinical_scenario_summary.csv
+./results/qemu_compound_faults.csv
+./results/qemu_density_sweep.csv
+./results/qemu_extra_faults.csv
+./results/qemu_hr_estimation_accuracy.csv
+./results/qemu_independent_80_trials.csv
+./results/qemu_independent_summary.csv
+./results/qemu_mitbih_clinical_validation.csv
+./results/reviewer_aami_baselines.csv
+./results/reviewer_noise_stats_ci.csv
+./results/stale_metrics.csv
+./results/variable_hr_detected.csv
+./results/variable_noisy_ecg.png
+./simulation/communication_fault.py
+./simulation/compare_hr_detection.py
+./simulation/compare_variable_hr.py
+./simulation/corrupt_data.py
+./simulation/data_generator.py
+./simulation/detect_communication.py
+./simulation/detect_corruption.py
+./simulation/detect_missing.py
+./simulation/detect_stale.py
+./simulation/ecg_hr_estimation.py
+./simulation/evaluate_noise_robustness.py
+./simulation/export_independent_trial.py
+./simulation/export_qemu_dataset.py
+./simulation/independent_validation_data.py
+./simulation/inject_variable_hr_faults.py
+./simulation/inspect_failed_trials.py
+./simulation/inspect_first_window.py
+./simulation/inspect_peak_prominence.py
+./simulation/inspect_rr_quality.py
+./simulation/missing_samples.py
+./simulation/noise_robustness_data.py
+./simulation/regenerate_all_cleanfigs.py
+./simulation/regenerate_all_figures.py
+./simulation/regenerate_figures.py
+./simulation/regenerate_final_paper_figures.py
+./simulation/resolve_remaining_audit_points.py
+./simulation/run_20page_journal_suite.py
+./simulation/run_80_qemu_trials.py
+./simulation/run_complete_qemu_benchmark.py
+./simulation/run_complete_verification_suite.py
+./simulation/run_expanded_clinical_recovery.py
+./simulation/run_extended_journal_experiments.py
+./simulation/run_final_audit_fixes.py
+./simulation/run_final_primary_benchmark.py
+./simulation/run_final_revision_audit.py
+./simulation/run_final_revision_audit.py.bak
+./simulation/run_independent_validation.py
+./simulation/run_mitbih_clinical_qemu.py
+./simulation/run_pt_style_pipeline_audit.py
+./simulation/run_q1_grade_validation.py
+./simulation/run_refractory_firmware_audit.py
+./simulation/run_remaining_fixes.py
+./simulation/run_reviewer_revisions.py
+./simulation/run_unified_master_pipeline.py
+./simulation/stale_data.py
+./simulation/subtle_corruption.py
+./simulation/test_peak_distance.py
+./simulation/variable_noisy_ecg.py
+./texput.fls
+./texput.log
+========== DOWNLOADS FILES ==========
+1.1.6-packet-tracer-tutored-activitys-logical-and-physical-mode-exploration.pksz | 16731570 bytes
+1.png | 205095 bytes
+1768218741940-removebg-preview.png | 156301 bytes
+1768218741940.jpg | 21075 bytes
+1_1 marksheet (1).pdf | 156362 bytes
+1_1 marksheet.pdf | 291174 bytes
+1_2 marksheet.pdf | 135263 bytes
+2.png | 1899086 bytes
+2025-12-31 02_47_46.617587_suvarnak2501@gmail.com.pdf | 195470 bytes
+20260829_112931PMByGPSMapCamera.jpg | 6217901 bytes
+2400040096_Suvarna.pdf | 815478 bytes
+24CS2203HF - DAA Lab Work Book - Final.pdf | 1169102 bytes
+24EC08HF_AI FOR EMBEDDED SYSTEMS-LAB WORKBOOK.pdf | 834762 bytes
+24EC2211 Lab Workbook.pdf | 1369520 bytes
+24EC2211_SWB1.pdf | 1111785 bytes
+24EDS3101A- Advanced Embedded Systems Lab Workbook.pdf | 1586034 bytes
+24SC2006- OOPS - LabWorkBook.pdf | 1641698 bytes
+26T1ETS1ES25F2100318.pdf | 743288 bytes
+26T1Q2S2ES25F2100318.pdf | 475904 bytes
+26T1S2ES25F2100318.pdf | 474631 bytes
+26T2ETS1ES25F2100318.pdf | 448244 bytes
+26T2Q1S2ES25F2100318.pdf | 447203 bytes
+2803832b-eb31-4684-a27f-b39062a2b40b.xlsx | 23821 bytes
+29784047-95e8-4980-aa0a-b1b9f688c0f4.docx | 20713 bytes
+3.png | 199662 bytes
+4-bit Binary LED - Template.zip | 3195 bytes
+4.png | 238803 bytes
+44496cbe-b7a4-44e2-ae54-90b7891bcd65.txt | 3812 bytes
+5.png | 266697 bytes
+591171331_18412099399142598_5124582515337387572_n-removebg-preview.png | 146789 bytes
+591171331_18412099399142598_5124582515337387572_n.jpg | 70877 bytes
+74LS47.pdf | 68986 bytes
+7f74fcd5-d4b7-42c3-b960-4bab1c1a8403.txt | 1793 bytes
+9136f688-e27c-4e2e-b006-e42cd342a9e1.jpg | 122875 bytes
+AES.pdf | 8453782 bytes
+AESend.pdf | 6504768 bytes
+AI for Embedded Systems.pdf | 15662963 bytes
+ALM-5.docx | 415666 bytes
+ALM-7.docx | 416806 bytes
+ALM-8.docx | 416166 bytes
+ALM1.docx | 15763 bytes
+ALM3 CO3.pdf | 22164 bytes
+ALM4 CO4 (1).pdf | 218701 bytes
+ALM4 CO4.pdf | 218701 bytes
+Achievement.png | 1351639 bytes
+Activity_18_IIC Report on Annual Research Awards Celebration.pdf | 2922263 bytes
+Add a heading (1).png | 1643045 bytes
+Add a heading (2).png | 5126453 bytes
+Add a heading.png | 474491 bytes
+Add a subheading.png | 3112762 bytes
+Advertisment_for_the_Post_of_Project_Staff___Project_Interns.pdf | 119741 bytes
+Anaconda3-2025.06-0-Windows-x86_64.exe | 958742216 bytes
+Annual Research Awards and Recognition Ceremony.png | 698715 bytes
+Antigravity.exe | 173082952 bytes
+Appointment Certificates (1).pdf | 5036183 bytes
+Assignment and Code.zip | 569081 bytes
+B Geetha Charan President.pdf | 3719515 bytes
+Battery Innovation For The Future.pdf | 17995790 bytes
+Blue Orange Modern Online Business Webinar Poster.jpg | 404114 bytes
+Bonafide-Certificate.pdf | 113408 bytes
+Build the Future. Leave your Legacy (1).png | 1659052 bytes
+Build the Future. Leave your Legacy (2).png | 537339 bytes
+Build the Future. Leave your Legacy (3).png | 559181 bytes
+Build the Future. Leave your Legacy (4).png | 1679159 bytes
+Build the Future. Leave your Legacy (5).png | 579876 bytes
+Build the Future. Leave your Legacy (6).png | 1672163 bytes
+Build the Future. Leave your Legacy (7).png | 579136 bytes
+Build the Future. Leave your Legacy (Instagram Post (45)) (1).png | 730697 bytes
+Build the Future. Leave your Legacy (Instagram Post (45)) (2).png | 333047 bytes
+Build the Future. Leave your Legacy (Instagram Post (45)).png | 726968 bytes
+Build the Future. Leave your Legacy.pdf | 9036348 bytes
+Build the Future. Leave your Legacy.png | 1678759 bytes
+Building Blocks of MCSoC (1).pptx | 543725 bytes
+Building Blocks of MCSoC.pptx | 543725 bytes
+C51V961.EXE | 109869064 bytes
+CAMPUS CONNECT (1).png | 655866 bytes
+CAMPUS CONNECT (2).png | 664136 bytes
+CAMPUS CONNECT (3).png | 736627 bytes
+CAMPUS CONNECT.png | 619138 bytes
+CC_poster.pdf | 17995709 bytes
+CDCS2_P1 (1).asc | 890 bytes
+CDCS2_P1 (1).log | 409 bytes
+CDCS2_P1 (1).op.raw | 2172 bytes
+CDCS2_P1 (1).raw | 26866866 bytes
+CDCS2_P1.asc | 28 bytes
+CDCS2_P2.asc | 961 bytes
+CENTRE FOR INNOVATION.svg | 706820 bytes
+CNN_CIFAR10.ipynb | 369830 bytes
+CNN_fashion.ipynb | 291285 bytes
+CNN_handwritten.ipynb | 213548 bytes
+CO 3 Question bank.pdf | 468226 bytes
+CO 4 Question bank.pdf | 359563 bytes
+CO-1 HA.docx | 62124 bytes
+CO-2 HA.docx | 61803 bytes
+CO-3 HA3.docx | 64253 bytes
+CO-4 HA4.docx | 63799 bytes
+CO-5 HA5.docx | 62225 bytes
+CO1 ALM 2 (1).docx | 58185 bytes
+CO1 ALM 2.docx | 58185 bytes
+CO1 PROBLEMS.pdf | 4296478 bytes
+CO1-20260908.zip | 4798440 bytes
+CO1-Electrostatics1.pptx | 451769 bytes
+CO1-Electrostatics2.pptx | 1936648 bytes
+CO1_PPTS-20260907.zip | 5751360 bytes
+CO2 ALM 2.docx | 58607 bytes
+CO2 PROBLEMS.pdf | 336871 bytes
+CO2-Magnetostatics.pptx | 1050160 bytes
+CO2_ML_for_Embedded_Systems_Optimization.pdf | 133884 bytes
+CO3 Home Assignment.docx | 16856 bytes
+CO3-SingleFile.pdf | 5151781 bytes
+CO4 Home Assignment.docx | 16603 bytes
+CO4-Sinle file.pdf | 288736 bytes
+CONGRAGULATIONS (1).png | 1946135 bytes
+CONGRAGULATIONS (2).png | 447024 bytes
+CONGRAGULATIONS (3).png | 451417 bytes
+CONGRAGULATIONS (6).png | 440879 bytes
+CP210x_Universal_Windows_Driver (1).zip | 288707 bytes
+CP210x_Universal_Windows_Driver.zip | 288707 bytes
+Candidate Admit Card.pdf | 787907 bytes
+Capacity Building Workshop Pathways to Publishing in High-Quality Journals (1).png | 247948 bytes
+Capacity Building Workshop Pathways to Publishing in High-Quality Journals.png | 460924 bytes
+Capture.PNG | 21962 bytes
+Capture2.PNG | 26751 bytes
+Capture4.PNG | 12218 bytes
+Career AWARENESS.zip | 9544579 bytes
+Case404.png | 2341732 bytes
+Centre for Innovation Incubation & Entrepreneurship.png | 593247 bytes
+Certificate OF Founding Member_KL University.pdf | 4077115 bytes
+Certificate OF Founding Member_KL University_page-0001.jpg | 1179640 bytes
+Certificate potrait.png | 209375 bytes
+CiscoPacketTracer_900_win_64bit.exe | 300966272 bytes
+Co5.pdf | 1494667 bytes
+CodeTantra-SEA-x64-5.0.2.exe | 100885640 bytes
+CodeTantra.SEA-x64-3.0.4.exe | 79128312 bytes
+CodeTantra.SEA-x64-3.0.5.exe | 83926480 bytes
+CodeTantra.SEA-x64-3.1.0.exe | 81256168 bytes
+Copy of CIIE id card design .png | 5427 bytes
+DM74LS161A.PDF | 113548 bytes
+DS_stm32f411ce.pdf | 2151969 bytes
+DTI (1).png | 456978 bytes
+DTI.png | 459259 bytes
+DTSP.pdf | 9241067 bytes
+Debugging Techniques Testing on the host machine.pptx | 370642 bytes
+Design Thinking.png | 456435 bytes
+Dev-Cpp 5.11 TDM-GCC 4.9.2 Setup.exe | 50433966 bytes
+DiscordSetup.exe | 107226856 bytes
+Doc1.docx | 618018 bytes
+DocScanner Apr 11, 2026 9-39 AM-compressed.pdf | 1092506 bytes
+DocScanner Apr 11, 2026 9-39 AM.pdf | 3367747 bytes
+EEC_W1_Tutorial (2).pdf | 297524 bytes
+EEC_W2_Tutorial.pdf | 71184 bytes
+EMBEDDED_PPT.pptx | 1342068 bytes
+EUREKA! (1).png | 2927272 bytes
+Electronics_Lab_Manual_Detailed F2-2026.pdf | 275417 bytes
+Embedded ALM-1_merged.pdf | 114285 bytes
+Embedded Software Development Tools, Host and Target Machines, Linker Locator.pptx | 3484603 bytes
+Embedded System Developer Virtual Internship_page-0001.jpg | 700504 bytes
+Embedded_Systems_Internship_Viva_Cheat_Sheet.pdf | 4678 bytes
+Exp3.docx | 228100 bytes
+Finalize Resume - Resume Now.pdf | 573307 bytes
+FlashMagic.exe | 52545656 bytes
+From Curiosity to Creation.png | 700508 bytes
+Fusion Client Downloader.exe | 13746992 bytes
+GAT.pptx | 392658 bytes
+GaomonTabletInstall_16.0.0.219.exe | 55601880 bytes
+Gemini_Generated_Image_szdwnqszdwnqszdw.png | 2302305 bytes
+Getting Embedded Software into the Target Machines.pptx | 300257 bytes
+HA3 (1).pdf | 157053 bytes
+HA4 (1).pdf | 153255 bytes
+HW1710BKPL.PDF | 250250 bytes
+Hannah morales (1).pdf | 3705887 bytes
+Hannah morales.pdf | 2964148 bytes
+Happy Fathers Day (1).png | 392993 bytes
+Hardware Design of On chip network.pptx | 1744501 bytes
+Head start SS.jpeg | 170192 bytes
+Home Assignment -2.pdf | 310225 bytes
+Home Assignment 1 (1) (1).docx | 17926 bytes
+Home Assignment 1 (1).docx | 17926 bytes
+Home Assignment 2.docx | 58773 bytes
+Home Assignment 4.pdf | 226225 bytes
+Home Assignment-1 (2).pdf | 152480 bytes
+Home assignment 1.pdf | 237177 bytes
+Home assignment 3.pdf | 229213 bytes
+Home assignment CO2 (1).pdf | 224354 bytes
+Home assignment CO2.pdf | 224354 bytes
+Home assignment1.pdf | 180377 bytes
+Home assignment2 (1).pdf | 177587 bytes
+Home assignment2.pdf | 177587 bytes
+Home assignment3.pdf | 129188 bytes
+Home assignment4.pdf | 146563 bytes
+IDs.pdf | 1007550 bytes
+IDs.png | 375678 bytes
+II III IV Year B.TECH (1).pdf | 198285 bytes
+ILLUMINATE.png | 960582 bytes
+IMG_1969.JPG | 1656680 bytes
+INTERNATIONAL LABOUR DAY (2).png | 60608 bytes
+ISKOPOLY (3).png | 1363741 bytes
+Ideathon.png | 1349326 bytes
+Insem.ipynb | 152911 bytes
+Install-GooglePlayGames.exe | 40212592 bytes
+Institutional Innovation Council – Achievements & Highlights (2).png | 7436972 bytes
+Instruction set simulators, Assert Macro (1).pptx | 490049 bytes
+Instruction set simulators, Assert Macro.pptx | 311862 bytes
+Intern_with_icon.mp4 | 84152442 bytes
+Internship (1).pdf | 3101924 bytes
+Internship (2).pdf | 2293197 bytes
+Internship-Application-Form.png | 865129 bytes
+Internship.pdf | 3141761 bytes
+Java – 11 Marks Important Questions with Answers.docx | 20391 bytes
+Java_Data_Structures_Cheat_Sheet.pdf | 198059 bytes
+KL CIIE (1).png | 313986 bytes
+KL CIIE (2).png | 297155 bytes
+KL CIIE (2).svg | 1290126 bytes
+KL CIIE (3).png | 296728 bytes
+KL CIIE.png | 405226 bytes
+KL CIIE.svg | 554528 bytes
+Keyword_Spotting.ipynb | 127581 bytes
+Kodukula Suvarna_CV.pdf | 106305 bytes
+LPC1768.PDF | 323927 bytes
+LPC2141.PDF | 194015 bytes
+LTspice64.msi | 182309376 bytes
+Launch Pad.png | 888242 bytes
+Lean Startup and Minimum Viable Product.png | 311901 bytes
+Liba.png | 195062 bytes
+MCSoC Memory Hierarchy.pptx | 327754 bytes
+MCSoC basics, design challenges and design space exploration .pptx | 2757761 bytes
+MEET THE ‘26-’27.png | 1755285 bytes
+MEET THE ‘26-’27.zip | 9688091 bytes
+Meghan Trainor - Mother (Official Music Video) [TubeRipper (mp3cut.net).mp3 | 256173 bytes
+Memory Consistency.pdf | 200661 bytes
+Microsoft.Management.Deployment.winmd | 31648 bytes
+Multicore SoC Hardware design Real Time Monitoring Interface Design (1).pptx | 2669237 bytes
+Multicore SoC Hardware design Real Time Monitoring Interface Design.pptx | 2669237 bytes
+NEC-1 (1).png | 1648322 bytes
+NEC-1 (2).png | 1129602 bytes
+NEC-1 (4).png | 1414197 bytes
+NEC-1.png | 740369 bytes
+NEC-2 (1).png | 1117247 bytes
+NEC-2 (2).png | 1058635 bytes
+NEC-2 (3).png | 1021482 bytes
+NEC-2.png | 718479 bytes
+NEC-5.zip | 9851843 bytes
+NEC26_Brochure.pdf | 10862684 bytes
+NO_test.703cjd7d.s1.wav | 32044 bytes
+NO_test.703cjd7d.s10.wav | 16418 bytes
+NO_test.703cjd7d.s2.wav | 32044 bytes
+NO_test.703cjd7d.s3.wav | 32044 bytes
+NO_test.703cjd7d.s4.wav | 32044 bytes
+NO_test.703cjd7d.s5.wav | 32044 bytes
+NO_test.703cjd7d.s6.wav | 32044 bytes
+NO_test.703cjd7d.s7.wav | 32044 bytes
+NO_test.703cjd7d.s8.wav | 19598 bytes
+NO_test.703cjd7d.s9.wav | 32044 bytes
+NO_test.703cjd7d.wav | 320044 bytes
+NO_train.703cgugr.s1.wav | 32044 bytes
+NO_train.703cgugr.s10.wav | 11086 bytes
+NO_train.703cgugr.s2.wav | 32044 bytes
+NO_train.703cgugr.s3.wav | 32044 bytes
+NO_train.703cgugr.s4.wav | 32044 bytes
+NO_train.703cgugr.s5.wav | 32044 bytes
+NO_train.703cgugr.s6.wav | 32044 bytes
+NO_train.703cgugr.s7.wav | 32044 bytes
+NO_train.703cgugr.s8.wav | 32044 bytes
+NO_train.703cgugr.s9.wav | 19692 bytes
+Neo-Browser-Setup-2.0.10.exe | 92784504 bytes
+NoC Introduction, Architecture.pptx | 2314417 bytes
+ONE DAY WORKSHOP (1).png | 582671 bytes
+ONE DAY WORKSHOP.png | 568078 bytes
+OOP-2.pdf | 8542425 bytes
+OOP.pdf | 10426130 bytes
+OOPend.pdf | 9624709 bytes
+OS HA2.docx | 387795 bytes
+OS HA4.docx | 20619 bytes
+OSHA3.docx | 90244 bytes
+Offer_Letter_964958_1436000.pdf | 914115 bytes
+Online Payment Receipt.pdf | 101754 bytes
+Origins.jpg | 99583 bytes
+Other.png | 1028 bytes
+PATENT YOUR INNOVATION (1).png | 976943 bytes
+PATENT YOUR INNOVATION.png | 822294 bytes
+PDFen (1).pdf | 946311 bytes
+PDFen.pdf | 709198 bytes
+PDFen_PDFen (1)_merged.pdf | 1647695 bytes
+Paper (1).pdf | 2627710 bytes
+Paper (2).pdf | 2643896 bytes
+Paper (3).pdf | 1085377 bytes
+Paper (4).pdf | 2303754 bytes
+Paper (5).pdf | 2305433 bytes
+Paper.pdf | 2486668 bytes
+Parallel Software Development Phase.pptx | 271000 bytes
+Party (1).png | 1541092 bytes
+Party.png | 1679421 bytes
+Patent your potential.png | 575182 bytes
+Pathfinders (1).png | 374942 bytes
+Pathfinders (2).png | 188349 bytes
+Pathfinders.png | 371485 bytes
+Period Peak ECG detection algorithm (1).pptx | 944339 bytes
+Period Peak ECG detection algorithm.pptx | 817662 bytes
+Photonic On-chip Interconnect.pptx | 808654 bytes
+Picture1.png | 50262 bytes
+Pixelpulse2_win_setup.exe | 100326512 bytes
+Pre lab and Viva Questions.docx | 27130 bytes
+Problem and Product Validation - 2026.png | 868100 bytes
+Profile.pdf | 45529 bytes
+ProtonVPN_v5.1.9_x64.exe | 130022392 bytes
+Purple Modern Company Portrait ID.pdf | 3569101 bytes
+QR CODE.jpeg | 93445 bytes
+QRCode for Internal Round of Smart India Hackathon - Student Registration.png | 3165665 bytes
+Question bank.pdf | 168989 bytes
+Quiz.pdf | 1486185 bytes
+RECRUITMENT 2026.zip | 7135397 bytes
+REVIEW & PRACTICE QUESTIONS CO-3 CO-4.docx | 16910 bytes
+RGB LED Color and Delay Change using Interrupts - Template.zip | 5932 bytes
+Rankcertificate_IITD.pdf | 45937 bytes
+Real Deign of Embedded Multicore SoC for Health Monitoring Introduction Application Specific DSP (1).pptx | 550317 bytes
+Real Deign of Embedded Multicore SoC for Health Monitoring Introduction Application Specific DSP.pptx | 355359 bytes
+Receipt-JNCASR.jpg | 89801 bytes
+Red and White Modern Business Profile LinkedIn Banner.png | 218388 bytes
+Respected Head of the Departments and Principals (1).png | 1326206 bytes
+Respected Head of the Departments and Principals (Invitation (A6)).png | 1822801 bytes
+Resume(2page).pdf | 121694 bytes
+Ripes-v2.2.6-win-x86_64.zip | 15731136 bytes
+Road Accident Data.xlsx | 37791095 bytes
+SDG Goals_Converted.pdf | 5214980 bytes
+SEB_3.8.0.742_SetupBundle.exe | 314362968 bytes
+SIH2026-IDEA-Presentation-Format.pptx | 924505 bytes
+SIH2026.png | 1018522 bytes
+SMART pill dispenser.pdf | 669564 bytes
+SN54160 (1).PDF | 780823 bytes
+SN54160.PDF | 780823 bytes
+SN5485.PDF | 337812 bytes
+SN54LS83A.PDF | 106613 bytes
+SN74LS04.PDF | 82964 bytes
+SUMMER TECHNICAL INTERNSHIP REPORT (2).pdf | 1186159 bytes
+Sale.png | 537815 bytes
+Screenshot 2026-01-26 185638.png | 84393 bytes
+Setup, ISP-ICP Utility, v7.10.exe | 5639483 bytes
+SetupSTM32CubeProgrammer_win64.zip | 195728377 bytes
+She Leads.png | 957684 bytes
+Shivaji Jayanti.png | 1796526 bytes
+Shivratri .png | 404785 bytes
+Skill workbook.pdf | 0 bytes
+Smart Phone_ Case Study.pptx | 89584 bytes
+Social_Network_Ads.csv | 4903 bytes
+Sravan.png | 196118 bytes
+Startup funding unlocked (1).png | 2515794 bytes
+Startup funding unlocked.png | 1877668 bytes
+Startups Day.png | 1345124 bytes
+Stepper-1.1.3.zip | 10600 bytes
+Strengthening innovation in aquaculture.png | 6090133 bytes
+Stress Management (1).png | 400470 bytes
+Stress Management.png | 402393 bytes
+Student Accommodation Details form (1).pdf | 305011 bytes
+Student Accommodation Details form.pdf | 148894 bytes
+Student_List-752356_.csv | 2910 bytes
+Study_Timetable.xlsx | 5532 bytes
+Sufian.png | 181941 bytes
+Sustainable Development Goals 1-7 Lasya & Haasini.docx | 17275 bytes
+SysinternalsSuite.zip | 174194062 bytes
+THE INCUBATION INSIGHT.png | 979739 bytes
+Technology Day (1).png | 247732 bytes
+Technology Day.png | 1284691 bytes
+The Entrepreneurial Spark.png | 2384264 bytes
+Trivia Quiz (1).png | 400028 bytes
+Trivia Quiz.png | 400800 bytes
+Trl (1).png | 925721 bytes
+Trl.png | 926118 bytes
+UltiMaker-Cura-5.9.0-win64-X64.exe | 302311768 bytes
+Untitled (Instagram Post (45)).png | 2282404 bytes
+Untitled design (1).png | 1169559 bytes
+Untitled design (5).png | 1760313 bytes
+Untitled design.pdf | 557630 bytes
+Untitled design.png | 1538541 bytes
+Vinayaka Chaviti.png | 377512 bytes
+VirtualBox-7.2.10-174163-Win.exe | 177827432 bytes
+WSN.pdf | 7014636 bytes
+WSN_Lab_Manual.pdf | 2604802 bytes
+We provide technology needs for your farm and agriculture business from soil sensors, water pH sensor, to pumps and irrigations..png | 1572750 bytes
+Week-5 Lab Assignment (Analog Expt 3).pdf | 181442 bytes
+We’re Hiring.png | 250559 bytes
+WhatsApp Image 2026-03-22 at 6.55.52 PM.jpeg | 31546 bytes
+WhatsApp Image 2026-04-10 at 6.27.54 AM (1).jpeg | 221698 bytes
+WhatsApp Image 2026-04-10 at 6.27.54 AM.jpeg | 250953 bytes
+WhatsApp Image 2026-06-28 at 12.31.44 PM.jpeg | 110141 bytes
+WhatsApp Image 2026-06-28 at 12.48.39 PM.jpeg | 256994 bytes
+WhatsApp Image 2026-06-28 at 2.54.41 PM.jpeg | 98855 bytes
+WhatsApp Image 2026-06-28 at 3.08.33 PM.jpeg | 110042 bytes
+WhatsApp Image 2026-06-28 at 3.25.53 PM (1).jpeg | 72827 bytes
+WhatsApp Image 2026-06-28 at 3.25.53 PM.jpeg | 120898 bytes
+WhatsApp Image 2026-06-28 at 7.23.47 PM.jpeg | 408119 bytes
+WhatsApp Image 2026-07-31 at 6.20.05 PM.jpeg | 270766 bytes
+WhatsApp Image 2026-08-24 at 2.07.57 PM.jpeg | 9141 bytes
+WhatsApp Image 2026-08-24 at 2.08.05 PM.jpeg | 16817 bytes
+WhatsApp Image 2026-08-25 at 9.02.01 PM.jpeg | 79551 bytes
+WhatsApp Image 2026-08-29 at 3.25.46 PM.jpeg | 243921 bytes
+WhatsApp Image 2026-08-31 at 11.53.07 PM.jpeg | 129116 bytes
+WhatsApp Image 2026-08-31 at 11.53.07 PM.jpg | 172595 bytes
+WhatsApp Image 2026-08-31 at 7.28.44 PM.jpeg | 199682 bytes
+WhatsApp Image 2026-09-02 at 8.34.46 PM (1).jpeg | 74045 bytes
+WhatsApp Image 2026-09-02 at 8.34.46 PM (2).jpeg | 65709 bytes
+WhatsApp Image 2026-09-02 at 8.34.46 PM (3).jpeg | 53188 bytes
+WhatsApp Image 2026-09-02 at 8.34.46 PM.jpeg | 69525 bytes
+WhatsApp Image 2026-09-27 at 3.03.00 PM.jpeg | 257590 bytes
+WhatsApp Image 2026-10-22 at 6.00.26 PM (1).jpeg | 322694 bytes
+WhatsApp Image 2026-10-22 at 6.00.26 PM.jpeg | 248475 bytes
+WhatsApp Image 2026-10-30 at 9.28.40 PM.jpeg | 11833 bytes
+WhatsApp Image 2026-10-30 at 9.30.49 PM.jpeg | 30120 bytes
+WhatsApp Installer (1).exe | 1058336 bytes
+WhatsApp Video 2026-09-05 at 10.42.23 PM.mp4 | 21714613 bytes
+WhatsApp Video 2026-09-05 at 10.42.45 PM.mp4 | 36291417 bytes
+WhatsApp Video 2026-09-05 at 10.43.01 PM.mp4 | 27071108 bytes
+WhatsApp_Image_2026-06-28_at_12.31.44_PM-removebg-preview.png | 271763 bytes
+WhatsApp_Image_2026-06-28_at_2.54.41_PM-removebg-preview.png | 139475 bytes
+Wireless.pdf | 13656764 bytes
+Xming-6-9-0-31-setup.exe | 2204914 bytes
+Y24 B.Tech FIRST YEAR Academic Calendar 2024-25 (1).pdf | 206054 bytes
+Y24 B.Tech FIRST YEAR Academic Calendar 2024-25.pdf | 206054 bytes
+Y24 Ideathon_Template.pptx | 136793 bytes
+Y24,Y23,Y22_B_Tech_SemIn_I_Examinations,_Sep_2025_2025_2026_Odd (1).pdf | 262492 bytes
+Y24,Y23,Y22_B_Tech_SemIn_I_Examinations,_Sep_2025_2025_2026_Odd.pdf | 311964 bytes
+Y24_Section Merging.xlsx | 11574 bytes
+YES_test.703ckfvk.s1.wav | 32044 bytes
+YES_test.703ckfvk.s10.wav | 32044 bytes
+YES_test.703ckfvk.s2.wav | 32044 bytes
+YES_test.703ckfvk.s3.wav | 32044 bytes
+YES_test.703ckfvk.s4.wav | 32044 bytes
+YES_test.703ckfvk.s5.wav | 32044 bytes
+YES_test.703ckfvk.s6.wav | 32044 bytes
+YES_test.703ckfvk.s7.wav | 32044 bytes
+YES_test.703ckfvk.s8.wav | 32044 bytes
+YES_test.703ckfvk.s9.wav | 32044 bytes
+YES_test.703ckfvk.wav | 320044 bytes
+YES_train.703cdsj9.s1.wav | 25860 bytes
+YES_train.703cdsj9.s10.wav | 11918 bytes
+YES_train.703cdsj9.s2.wav | 27252 bytes
+YES_train.703cdsj9.s3.wav | 32044 bytes
+YES_train.703cdsj9.s4.wav | 32044 bytes
+YES_train.703cdsj9.s5.wav | 32044 bytes
+YES_train.703cdsj9.s6.wav | 32044 bytes
+YES_train.703cdsj9.s7.wav | 26928 bytes
+YES_train.703cdsj9.s8.wav | 27388 bytes
+YES_train.703cdsj9.s9.wav | 32044 bytes
+ZYRIC (1).png | 1422131 bytes
+ZYRIC (2).png | 2240255 bytes
+ZYRIC (3).png | 1605516 bytes
+ZYRIC (4).png | 2183444 bytes
+_Annual Research Awards and Recognition Ceremony.pdf | 8667028 bytes
+_OceanofPDF.com_Java_The_Complete_Reference_13th_Ed_-_Herbert_Schildt.pdf | 214582118 bytes
+_Temperature LED Bargraph - Template.zip | 4506 bytes
+acc_qemu.zip | 5613 bytes
+adc.mp4 | 3072293 bytes
+adc_test_code_temperature.zip | 123797 bytes
+ai12_1.png | 926634 bytes
+ai12_2.png | 894560 bytes
+ai41.png | 71473 bytes
+ai42.png | 89761 bytes
+ai51.png | 294616 bytes
+ai52.png | 74725 bytes
+ai8.png | 543144 bytes
+ai8_1.png | 437084 bytes
+ai9.png | 203330 bytes
+archive (3).zip | 761599 bytes
+archive.zip | 3626659 bytes
+arduino-ide_2.3.2_Windows_64bit.exe | 149952672 bytes
+arduino-ide_2.3.3_Windows_64bit.exe | 150530232 bytes
+audit_v5_clinical_execution.log | 124 bytes
+audit_v5_execution.log | 696 bytes
+audit_v5_results.tar.gz | 34425 bytes
+audit_v6_results.tar.gz | 93214 bytes
+av_noc_live_demo.zip | 11398 bytes
+brick.rar | 1950195 bytes
+cc.pdf | 92764 bytes
+certificate-6jmvrxhsvpkn-1779290428.pdf | 413284 bytes
+certificate-bnim9jtey869-1779291356.pdf | 413270 bytes
+certificate-boaukfeovxsn-1779291098.pdf | 413268 bytes
+certificate-bqosdqyaj4m3-1778589444.pdf | 413669 bytes
+certificate-c49stmnkmdwf-1779893725.pdf | 413305 bytes
+certificate-k2vb6wjj3dqr-1779291477.pdf | 413280 bytes
+certificate-vrdjrdy5ag92-1778589762.pdf | 413369 bytes
+certificate-xmw3i4cfgg78-1779893952.pdf | 413290 bytes
+certificate-y3z9mt32fys9-1779894554.pdf | 413323 bytes
+certificate-z2sqskwc9fbp-1778146651.pdf | 413329 bytes
+ciie_logo.pdf | 32547 bytes
+co2.docx | 228359 bytes
+color.pdf | 270515 bytes
+desktop.ini | 282 bytes
+dm00244518-stm32-nucleo-144-boards-stmicroelectronics.pdf | 2574650 bytes
+dog.png | 56387 bytes
+download (23).jpg | 4177 bytes
+download.pdf | 68323 bytes
+drive-download-20260826T154248Z-1-001.zip | 8773 bytes
+e4dcc0f7-7831-4748-83d9-183973db9014.docx | 15516 bytes
+eclipse-inst-jre-win64.exe | 167075216 bytes
+ed14.png | 50657 bytes
+ed7.png | 79322 bytes
+ed9.png | 25502 bytes
+edited-photo.png | 2425210 bytes
+eh.png | 63064 bytes
+ei-keyword_spotting-arduino-1.0.1-impulse-#1.zip | 5224358 bytes
+exp7_1_wsn.png | 62884 bytes
+exp7_wsn.png | 5069 bytes
+exp8_wsn.png | 71874 bytes
+exp9_1_wsn.png | 122521 bytes
+exp9_wsn.png | 146111 bytes
+face_model.joblib | 21531 bytes
+fashion.jpg | 3454 bytes
+final_callgraph_check.txt | 11914 bytes
+final_numerical_audit.py | 3319 bytes
+final_numerical_results.json | 86293 bytes
+final_paper_figures.tar.gz | 1151139 bytes
+final_technical_check.txt | 6088 bytes
+final_verified_paper_assets.tar.gz | 1745723 bytes
+footed and unfooted.pdf | 41962 bytes
+gem5_windows_installation_guide.pdf | 126135 bytes
+gemini-code-1784730436197.sh | 146 bytes
+handwritten_image.png | 16824 bytes
+health_anomaly_test.csv | 22420668 bytes
+health_anomaly_train_normal.csv | 55290043 bytes
+health_companion_live_dashboard.zip | 6321 bytes
+health_companion_wokwi_dashboard_integrated.zip | 11216 bytes
+id_page-0001.jpg | 1680918 bytes
+ilovepdf_merged.pdf | 3007341 bytes
+ilovepdf_merged_compressed.pdf | 1090902 bytes
+image (34).png | 497976 bytes
+image (35).png | 177505 bytes
+image (43).png | 34485 bytes
+image.png | 2393723 bytes
+images (3).jpg | 5842 bytes
+images (4).jpg | 32942 bytes
+index.html | 7642 bytes
+innovation hackathon.png | 278531 bytes
+insurance.csv | 55628 bytes
+internship ppt.pdf | 1971685 bytes
+invite.ics | 3907 bytes
+invoice.pdf | 80659 bytes
+janice.png | 145945 bytes
+jdk-26_windows-x64_bin.exe | 197819056 bytes
+jre-8u431-windows-x64.exe | 69241960 bytes
+jre-8u461-windows-x64.exe | 40344160 bytes
+jwala.jpg | 2229978 bytes
+keli4.EXE | 604834512 bytes
+klLlWdZUK7rxeWou4CzhYvmDTAucvJo450dOKqv3.pdf | 238323 bytes
+krita-x64-5.3.2.1-setup.exe | 164092376 bytes
+lm2.mp4 | 23006755 bytes
+mcu8051ide-1.4.9-setup.exe | 7840331 bytes
+memory apis (1).txt | 1859 bytes
+memory apis.txt | 1859 bytes
+ni labview ni multisim.rar | 4816160379 bytes
+npp.8.7.6.Installer.x64.exe | 6661560 bytes
+octave-10.3.0-w64-installer.exe | 554498568 bytes
+of APPOINTMENT.pdf | 3672824 bytes
+oop certificate.pdf | 519313 bytes
+oop_lab.docx | 14634 bytes
+original_figure_sources.tar.gz | 3167657 bytes
+p.docx | 1009105 bytes
+p.pdf | 264725 bytes
+packages-20260606T052153Z-3-001.zip | 400494987 bytes
+paper_provenance_evidence.tar.gz | 7033387 bytes
+paper_ref.pdf | 1716066 bytes
+paper_revision_evidence.tar.gz | 175790 bytes
+paper_with_figures_overleaf.zip | 1814338 bytes
+patent draft.docx | 20102 bytes
+pcb_flowchart.png | 156269 bytes
+photo-1525824236856-8c0a31dfe3be.jpeg | 11796 bytes
+photo-1525824236856-8c0a31dfe3be.jpg | 60917 bytes
+photo_6098281264973988888_x.jpg | 17090 bytes
+photo_6098281264973988889_m (1).jpg | 11227 bytes
+photo_6098281264973988889_m.jpg | 11227 bytes
+photo_6098281264973988890_x.jpg | 11488 bytes
+photo_6098281264973988891_y (1).jpg | 53721 bytes
+photo_6098281264973988891_y.jpg | 53721 bytes
+photo_6098281264973988892_y.jpg | 39658 bytes
+photo_6233195645259334444_y.jpg | 206910 bytes
+physionet_input_verification.json | 6024 bytes
+physionet_verification.log | 1429 bytes
+pic.pdf | 333568 bytes
+pic1.jpg | 23931 bytes
+pic2.jpg | 23592 bytes
+pic2.pdf | 333118 bytes
+pic3.jpg | 335924 bytes
+pic4.jpg | 114984 bytes
+pic5.jpg | 44926 bytes
+pr.pdf | 240957 bytes
+primary_benchmark_execution.log | 12863 bytes
+print.docx | 396226 bytes
+print1.pdf | 763044 bytes
+print_dc.docx | 901222 bytes
+prints.pdf | 187383 bytes
+product_295.pdf | 46706 bytes
+project_CC_full_clean (1).ino | 18910 bytes
+project_inventory.txt | 7039 bytes
+prt (1).pdf | 397553 bytes
+psychological_state_dataset (1).csv | 256739 bytes
+psychological_state_dataset.csv | 256739 bytes
+pt_style_execution.log | 64 bytes
+pushuuhallticket.pdf | 775536 bytes
+putty.exe | 1709672 bytes
+pycharm-2025.1.3.1.exe | 875261960 bytes
+python-3.10.4-amd64.exe | 28488112 bytes
+qrcode_283073678_7007e6a7840e1b8d2fd012ebe82fdba6.png | 31914 bytes
+qrcode_385931542_9e2a32af42adafd5a41f0157de3253f1.png | 32748 bytes
+raptor2019.msi | 3404800 bytes
+recruit.zip | 2821011 bytes
+refractory_firmware_execution.log | 212 bytes
+refractory_git_history.txt | 21790 bytes
+regenerate_final_paper_figures.py | 4348 bytes
+regenerate_final_paper_figures_refined.py | 5418 bytes
+resolve_remaining_audit_points_original.py | 20803 bytes
+result_179164037833497887.pdf | 100348 bytes
+resume.pdf | 149351 bytes
+revision  (1).docx | 19059 bytes
+revision .docx | 29116 bytes
+run_final_primary_benchmark.py | 9466 bytes
+run_final_revision_audit.py | 7117 bytes
+run_pt_style_pipeline_audit.py | 6201 bytes
+run_refractory_firmware_audit.py | 7798 bytes
+sanction_letter.pdf | 3393625 bytes
+scheme of valuation.pdf | 174168 bytes
+sct.png | 727513 bytes
+sct1.png | 161606 bytes
+sensors-and-signals.png | 11178 bytes
+signals prelab.docx | 3000488 bytes
+sih (A2 (Landscape)).png | 350169 bytes
+sih.html | 39872 bytes
+sih.pdf | 1521738 bytes
+skill7.ms14 (Security copy) | 800824 bytes
+skill7.ms14 | 113247 bytes
+slay'.jpeg | 228811 bytes
+smart india hackathon.png | 499894 bytes
+smart_home_presentation.pdf | 4701 bytes
+snapedit_1735549465301.jpeg | 95492 bytes
+soc_build_report_2400040096 (1).txt | 856 bytes
+soc_build_report_2400040096 (2).txt | 830 bytes
+soc_build_report_2400040096.txt | 869 bytes
+spam mail.csv | 484839 bytes
+spam.csv | 503665 bytes
+spoj1.txt | 318 bytes
+st-stm32cubeide_2.1.1_28236_20260312_0043_x86_64.exe.zip | 866067683 bytes
+stale_confusion_matrices.json | 30011 bytes
+stm32c031c4.pdf | 2527456 bytes
+stm32cubemx-win-v6-17-0.zip | 692761085 bytes
+stsw-link007-v3-17-11.zip | 4973107 bytes
+stsw-link009.zip | 5329298 bytes
+success (2).html | 1061 bytes
+support_vector_machine.ipynb | 144328 bytes
+synthetic_health_dataset_stratified_20_patients (1).csv | 265052543 bytes
+thingspeak_exp2.png | 51002 bytes
+tractro 2 (1).png | 20057 bytes
+tractro 2.png | 20057 bytes
+various government Funding Opportunities & schemes towards Startup Initiation.png | 857181 bytes
+verify_physionet_inputs.py | 1698 bytes
+vyasa.jpg | 99583 bytes
+week-6 updated.txt | 16531 bytes
+windowsdesktop-runtime-8.0.7-win-x64.exe | 58582160 bytes
+word cruise.png | 98883 bytes
+wsn7_1.png | 10427 bytes
+wsn7_2.png | 11303 bytes
+wsn7_3.png | 10225 bytes
+wsn7_4.png | 11638 bytes
+yes_no_keyword_spotting_simplified.ipynb - Colab_simplified.pdf | 608240 bytes
+yes_no_model_data.h | 31418 bytes
+yes_no_model_int8.tflite | 5080 bytes
+youuuuuu (1).jpeg | 63007 bytes
+youuuuuu.jpeg | 127707 bytes
+~$NPS-Session 1_Introduction to CN and its Uses.pptx | 165 bytes
+“In a gentle way, you can shake the world.” — Mahatma Gandhi.png | 224917 bytes
+========== DISK SPACE ==========
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sdd       1007G  7.5G  949G   1% /
+C:\             476G  333G  144G  70% /mnt/c

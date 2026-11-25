@@ -1,0 +1,14 @@
+Noise 30 0.0
+Noise 30 0.08
+Noise 30 0.15
+Noise 30 0.25
+Noise 30 0.35
+Clinical 30 clean
+Clinical 30 triple
+Noise 48 0.0
+Noise 48 0.08
+Noise 48 0.15
+Noise 48 0.25
+Noise 48 0.35
+Clinical 48 clean
+Clinical 48 triple

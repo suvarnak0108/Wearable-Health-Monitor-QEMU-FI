@@ -1,0 +1,167 @@
+[
+  {
+    "database": "mitdb",
+    "record": "100",
+    "signal_cache_equal": true,
+    "annotation_cache_equal": true,
+    "max_signal_difference": 0.0,
+    "downloaded_file_sha256": {
+      "100.hea": "60ebc904c7bf3e04d142638d3fd5c903e8dc9f10f1ea3264e07926aa089ee75e",
+      "100.dat": "b2ea3c250e56e48f4b7b90697832b8ecd1afa1e0bb31f2dcfea4ed6e1075a639",
+      "100.atr": "8d8a5349fb16638ebbf649f1779d12e96d91b736b2aafe59db43719ae583d471"
+    }
+  },
+  {
+    "database": "mitdb",
+    "record": "101",
+    "signal_cache_equal": true,
+    "annotation_cache_equal": true,
+    "max_signal_difference": 0.0,
+    "downloaded_file_sha256": {
+      "101.hea": "d5f02fbe8673fa05465442191b98ca0d28a1670e7ef0e83fb9ef8723113a311c",
+      "101.dat": "698d1ea6f472d23ca50317c72c96cda2698badd8578220ed0380cdf241e39006",
+      "101.atr": "441cdd6486cfdf4c53e344d1048ab81296773e7058d53069022adc68543a0663"
+    }
+  },
+  {
+    "database": "mitdb",
+    "record": "102",
+    "signal_cache_equal": true,
+    "annotation_cache_equal": true,
+    "max_signal_difference": 0.0,
+    "downloaded_file_sha256": {
+      "102.hea": "a22f09934ee1cfe339d1502f68eb3f0175815f47273b81ea55f75aeb5584cb0d",
+      "102.dat": "2b56039f9ece83b53511e0fc24e95f23b90712c8017fe4d915e040e78713c38e",
+      "102.atr": "24e29031c081806ff6d4ec20fb386e28d8f885f0dca5f74dc29c881e8b196d09"
+    }
+  },
+  {
+    "database": "mitdb",
+    "record": "103",
+    "signal_cache_equal": true,
+    "annotation_cache_equal": true,
+    "max_signal_difference": 0.0,
+    "downloaded_file_sha256": {
+      "103.hea": "3da9706fc27cc5d627a31b04b74b908ac0b6e061843a87cbd57801e5ea0fed7b",
+      "103.dat": "f7994f0bd196730779998b4bddf26cb47f396599fb370a08b5cb29a3ac4d555d",
+      "103.atr": "392ce37fbc7e89b3f14998e197a844f23cce6a3db6edaa71b4b49bf3ca5b6596"
+    }
+  },
+  {
+    "database": "mitdb",
+    "record": "105",
+    "signal_cache_equal": true,
+    "annotation_cache_equal": true,
+    "max_signal_difference": 0.0,
+    "downloaded_file_sha256": {
+      "105.hea": "9a024eebf8e9baf630308815e689d7e3eab471ab0069db6aded127c396418d48",
+      "105.dat": "fcd0153dfea69c749194bb73de7db124588857cfa2f6aecb72754894c8afde02",
+      "105.atr": "278d534c1ad952a6d41db963b6b2b00be070d8dd5fa66545caa5c18edcc36497"
+    }
+  },
+  {
+    "database": "mitdb",
+    "record": "106",
+    "signal_cache_equal": true,
+    "annotation_cache_equal": true,
+    "max_signal_difference": 0.0,
+    "downloaded_file_sha256": {
+      "106.hea": "ad5ed3ee5603926a07a09f0d0c9e2a7ff10a705dbafcde3d185317730a8839ab",
+      "106.dat": "c017bc18b95b1f970bca143a044ee5d54168648b541e47aa656f2737a59c1202",
+      "106.atr": "585347e6d1bd3ad89cdb52cb80945878a5e51026d81f871a376bb6e13936f7fa"
+    }
+  },
+  {
+    "database": "mitdb",
+    "record": "108",
+    "signal_cache_equal": true,
+    "annotation_cache_equal": true,
+    "max_signal_difference": 0.0,
+    "downloaded_file_sha256": {
+      "108.hea": "1c461d963db1883589a975daa80b4104eee6cabb2f5cfec3e0d63b78e7a6a405",
+      "108.dat": "229a4ef62679dc5c6ea781bfbaec2bd784151fc9f9517f4cdecd533a9431eb20",
+      "108.atr": "ea227008ac3bc4ada87807117909e77ae0643d5a8bc09f32b9096a35f140cbf3"
+    }
+  },
+  {
+    "database": "mitdb",
+    "record": "113",
+    "signal_cache_equal": true,
+    "annotation_cache_equal": true,
+    "max_signal_difference": 0.0,
+    "downloaded_file_sha256": {
+      "113.hea": "848ed5243adaf3b53c72b36b1a5a8b5b8cf585a1d78a02e7b25c1d38818d4343",
+      "113.dat": "f5509b71dabaaa11c53f687ee17aab0071bce3d471e2ab77c71a6434f5b7aacf",
+      "113.atr": "39527d597a246410d2c16f062600c73271a73a7503d49cafd1d17508af4cd432"
+    }
+  },
+  {
+    "database": "mitdb",
+    "record": "115",
+    "signal_cache_equal": true,
+    "annotation_cache_equal": true,
+    "max_signal_difference": 0.0,
+    "downloaded_file_sha256": {
+      "115.hea": "3212847a692bf3bc5e1dde0343d272e7d56735983276031420060d51d0cdd41c",
+      "115.dat": "34185efe9889608c76ebfbf5a467d3457970c6d11b77a2bf81b94bcf46e07c41",
+      "115.atr": "4980667b19b7a637729d40762f071b483d69f5431db818cbddc9a8ae64cc4da2"
+    }
+  },
+  {
+    "database": "mitdb",
+    "record": "119",
+    "signal_cache_equal": true,
+    "annotation_cache_equal": true,
+    "max_signal_difference": 0.0,
+    "downloaded_file_sha256": {
+      "119.hea": "658f01382d7280a06e2f4c06363569d477394a6898c69ee788bb383f6092df63",
+      "119.dat": "02a286a28e69b441568add915f16a2856b22bab893bf8729ee9654411ed3a5aa",
+      "119.atr": "fd919c8ea20eed4a22fb37984977f30ce48d382eefd2d90934bf947a88e0fd7b"
+    }
+  },
+  {
+    "database": "mitdb",
+    "record": "200",
+    "signal_cache_equal": true,
+    "annotation_cache_equal": true,
+    "max_signal_difference": 0.0,
+    "downloaded_file_sha256": {
+      "200.hea": "9e0c2ff5b790cf624deab0ccb8a9f211a9e29a748d8197da3c1ee7c5b596b40c",
+      "200.dat": "a9e203b3807b9fcd3647cde03444437cb8eec7f5128a8eb413edafb394272e0f",
+      "200.atr": "f9624a11696760427d75314a78c31f89ca3c446af855890c8f8b66cddd8b3a3f"
+    }
+  },
+  {
+    "database": "nstdb",
+    "record": "bw",
+    "signal_cache_equal": true,
+    "annotation_cache_equal": null,
+    "max_signal_difference": 0.0,
+    "downloaded_file_sha256": {
+      "bw.hea": "e3ea3b09fb8d65877cf6ae4dec213b9693243c435333a150c14f6b551f7b7d61",
+      "bw.dat": "15f68280aba8b006f5497c14da44b558e68caaabc2afc5c4b710eea779b7512c"
+    }
+  },
+  {
+    "database": "nstdb",
+    "record": "ma",
+    "signal_cache_equal": true,
+    "annotation_cache_equal": null,
+    "max_signal_difference": 0.0,
+    "downloaded_file_sha256": {
+      "ma.hea": "c3751bb8d327b83158f3e4a81f821518a71d1ae8566189b098baa47fb89afaa7",
+      "ma.dat": "40bda613a3e65adb277df1b72f8a41d2c1c2e0131ea4ec1e03cf1e2cd68199c4"
+    }
+  },
+  {
+    "database": "nstdb",
+    "record": "em",
+    "signal_cache_equal": true,
+    "annotation_cache_equal": null,
+    "max_signal_difference": 0.0,
+    "downloaded_file_sha256": {
+      "em.hea": "0bdfa989de0dd06486159f2c36bd80abd684d951c3930daea2ee46572fd20d49",
+      "em.dat": "4f9416a04b2bed98081ee3118c1282f9e35321bfd5da96ce48056a3fe147358d"
+    }
+  }
+]
